@@ -42,14 +42,6 @@ class QuantumEvAlgorithm:
 
         return samples
 
-    def sample_evaluation(self, samples):
-        """Each of the generated samples is evaluated against the cost function. In this case, the best
-        performing sample is the output of the method."""
-        cost = self.cost_function(samples)
-        sort_order = np.argsort(cost, axis=0)
-        best_performing_sample = samples[sort_order[0]]
-
-        return best_performing_sample
 
     def elitist_sample_evaluation(self, samples):
         """This function is analog to the previous one. Instead of choosing the best, it computes the mean of the
@@ -61,18 +53,6 @@ class QuantumEvAlgorithm:
 
         return best_performing_sample
 
-    def elitist_sample_evaluation_2(self, samples):
-        """This function is analog to the previous one. Instead of choosing the best, it computes the mean of the
-        10 best samples."""
-        cost = self.cost_function(samples)
-        sort_order = np.argsort(cost, axis=0)
-        elitist_level = self.elitist_level
-        best_performing_sample = np.mean(samples[sort_order[0:elitist_level]], axis=0)[None]
-
-        if self.cost_function(self.best_of_best) > self.cost_function(best_performing_sample):
-            self.best_of_best = best_performing_sample
-
-        return self.best_of_best
 
     def quantum_update(self, Q, best_performing_sample):
         """This method updates the Quantum individual with the criteria explained in: URL (PENDING).
@@ -104,15 +84,20 @@ class QuantumEvAlgorithm:
 
         return Q
 
-    def training(self, N_iterations=100000, sample_size=5, sample_increaser_factor=0):
+    def training(self, N_iterations=100000, sample_size=5, sample_increaser_factor=0,
+                 save_results = False, filename = 'testing_evl.npz'):
+
+        assert(sample_size > self.elitist_level), "Sample size must be greater than elitist level, byF"
         j = 0
 
+
         Q = self.quantum_individual_init()
-        saving_interval = 50
+        saving_interval = 500
 
         Q_history = np.zeros((int(N_iterations / saving_interval), 2, self.n_dims))
         best_performer_marker = np.zeros((int(N_iterations / saving_interval), 1))
         function_evaluations = np.zeros(int(N_iterations / saving_interval))
+
         print('Beginning of the iteration process')
         beginning = time.time()
         for i in range(N_iterations):
@@ -129,7 +114,9 @@ class QuantumEvAlgorithm:
                 j += 1
 
             if np.mod(i, 50000) == 0:
-                print(f'Iteration {i}, Best cost = {output}')
+                print(f'Progress {100*i/N_iterations:.2f}%, Best cost = {output}')
+
+
         end = time.time()
 
         print(f'The algorithm took {end - beginning} seconds')
@@ -137,9 +124,10 @@ class QuantumEvAlgorithm:
         print(f'The min is IN = {best_performer}')
 
         results_path = 'Results'
-
-        np.savez(os.path.join(results_path, "testing_evl.npz"), best_performer_marker, Q_history, function_evaluations,
-                 cost_h=best_performer_marker,
-                 pos_history=Q_history, time=function_evaluations)
+        if save_results:
+            print('Saving RESULTS')
+            np.savez(os.path.join(results_path, filename), best_performer_marker, Q_history, function_evaluations,
+                    cost_h = best_performer_marker,
+                    pos_history = Q_history, time=function_evaluations)
 
         print('End of training')
