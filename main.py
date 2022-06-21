@@ -8,8 +8,8 @@ import os
 def f(x: np.ndarray):
     """n-dimensional paraboloid definition. For the first test of the optimization algorithm."""
     n_dims = x.shape[1]
-    min_value = np.random.rand(1, n_dims)
-    f = np.sum(np.square(x - min_value), axis=1)[:, None]
+    min_value = 0.8 * np.ones((1, n_dims))
+    f = np.sum(np.square(x - min_value), axis=1)
 
     return f
 
@@ -28,6 +28,7 @@ def g(x: np.ndarray):
     g = -a * np.exp(auxiliar) - np.exp(auxiliar_2) + a + np.exp(1.0)
 
     return g
+
 
 def rastrigin(x: np.ndarray):
     """n-dimensional rastrigin function, testing purposes"""
@@ -50,13 +51,14 @@ def rosenbrock(x: np.ndarray):
 
 # _,min_solution = f(np.random.rand(1,10))
 
-if __name__ == '__main__':
-    n_dims = 500
-    optimizer = QuantumEvAlgorithm(rosenbrock, n_dims = n_dims) # Instatiation of the class with the ackley function
+if __name__ == '__ma0in__':
+    n_dims = 10
+    optimizer = QuantumEvAlgorithm(rosenbrock, n_dims = n_dims,sigma_scaler = 1.00001,
+                                   mu_scaler = 200, elitist_level = 5)
     Q = optimizer.quantum_individual_init() #Quantum individual initialization
 
-    N_iterations = 8000000
-    sample_size = 10
+    N_iterations = 1500000
+    sample_size = 5
     saving_interval = 50 # Every 500 iterations the cost history is saved
 
     Q_history = np.zeros((int(N_iterations / saving_interval), 2, n_dims))
@@ -67,9 +69,12 @@ if __name__ == '__main__':
     beginning = time.time()
 
     for i in range(N_iterations):
-        samples = optimizer.quantum_sampling(Q, sample_size)
+        final_sample_size_factor = 10.0
+        adapted_sample_size = int(sample_size * (1 + final_sample_size_factor*(i/N_iterations)))
+        # print(adapted_sample_size)
+        samples = optimizer.quantum_sampling(Q, adapted_sample_size)
         best_performer = optimizer.elitist_sample_evaluation(samples)
-        Q = optimizer.quantum_update(Q, best_performer,i)
+        Q = optimizer.quantum_update(Q, best_performer)
         if np.mod(i, saving_interval) == 0:
             Q_history[j, :, :] = Q
 
@@ -88,11 +93,15 @@ if __name__ == '__main__':
     function_evaluations: int = sample_size * N_iterations
     # optimization_time = np.linspace(0, end - beginning, num=len(best_performer_marker))
     optimization_time = np.linspace(0, function_evaluations, num=len(best_performer_marker))
-    # Saving the results. We save into a npz file the cost history, the feature history and an optimization
-    # time vector. Optimization results representation
+
+
+    # Saving the results. We save into a npz file the cost history,
+    # the feature history and an optimization time vector.
+    # This results are represented in the correspondent .py file
 
     results_path = 'Results'
-    # np.savez(os.path.join(results_path,"testing_ev.npz"), best_performer_marker, Q_history, optimization_time,
+
+    # np.savez(os.path.join(results_path,"testing_evl.npz"), best_performer_marker, Q_history, optimization_time,
     #          cost_h=best_performer_marker,
     #          pos_history=Q_history, time=optimization_time)
 

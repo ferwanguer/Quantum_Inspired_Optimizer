@@ -1,14 +1,15 @@
 import numpy as np
 from matplotlib import pyplot as plt
 import os
+
 # DATA IMPORT FROM NPZ FILES
 results_path = 'Results'
-optimization_results = np.load(os.path.join(results_path,'testing_ev.npz'))
+optimization_results = np.load(os.path.join(results_path,'testing_evl.npz'))
 Q_history = optimization_results['pos_history']
 cost_history = optimization_results['cost_h']
 history = optimization_results['time']
 
-optimization_results_2 = np.load(os.path.join(results_path,'Optimization_results_rastrigin_pso_ev_50dim_1.npz'))
+optimization_results_2 = np.load(os.path.join(results_path,'testing_evl.npz'))
 cost_history_2 = optimization_results_2['cost_h']
 history_2 = optimization_results_2['time']
 
