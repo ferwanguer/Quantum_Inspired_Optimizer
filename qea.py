@@ -113,7 +113,7 @@ class QuantumEvAlgorithm:
                 function_evaluations[j] = i * (sample_size + (sample_increaser_factor * i) / 2)
                 j += 1
 
-            if np.mod(i, 50000) == 0:
+            if np.mod(i, 10000) == 0:
                 print(f'Progress {100*i/N_iterations:.2f}%, Best cost = {output}')
 
 
