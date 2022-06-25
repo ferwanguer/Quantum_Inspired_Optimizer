@@ -5,7 +5,11 @@ import numpy as np
 
 def f(x: np.ndarray):
     """n-dimensional paraboloid definition. For the first test of the optimization algorithm."""
+    if x.ndim == 1:
+        x = x[None]
+
     n_dims = x.shape[1]
+
     min_value = 0.8 * np.ones((1, n_dims))
     f = np.sum(np.square(x - min_value), axis=1)
 
@@ -15,6 +19,9 @@ def f(x: np.ndarray):
 def g(x: np.ndarray):
 
     """n-dimensional Ackley function definition. For the second test of the optimization algorithm. """
+    if x.ndim == 1:
+        x = x[None]
+
     n_dims = x.shape[1]
 
     a = 20.0
@@ -30,7 +37,12 @@ def g(x: np.ndarray):
 
 def rastrigin(x: np.ndarray):
     """n-dimensional rastrigin function, testing purposes"""
+    if x.ndim == 1:
+        x = x[None]
+
     n_dims = x.shape[1]
+
+
     a = 10
     x_squared = np.square(x)
     x_sin = a * np.cos(2 * np.pi * x)

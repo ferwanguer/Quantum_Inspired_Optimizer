@@ -1,7 +1,7 @@
 import numpy as np
 import time
 import os
-
+import sys
 
 class QuantumEvAlgorithm:
     """This object encapsules the necessary methods to make a Quantum-Inspired
@@ -84,6 +84,16 @@ class QuantumEvAlgorithm:
 
         return Q
 
+    def progress(self, count, total, status='Processing'):
+        bar_len = 50
+        filled_len = int(round(bar_len * count / float(total)))
+
+        percents = round(100.0 * count / float(total), 1)
+        bar = '|' * filled_len + '_' * (bar_len - filled_len)
+
+        sys.stdout.write('\r%s %s%s %s' % (bar, percents, '%', status))
+        sys.stdout.flush()
+
     def training(self, N_iterations=100000, sample_size=5, sample_increaser_factor=0,
                  save_results = False, filename = 'testing_evl.npz'):
 
@@ -131,3 +141,4 @@ class QuantumEvAlgorithm:
                     pos_history = Q_history, time=function_evaluations)
 
         print('End of training')
+
