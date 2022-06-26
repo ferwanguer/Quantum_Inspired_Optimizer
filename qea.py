@@ -8,7 +8,7 @@ class QuantumEvAlgorithm:
     optimization algorithm. For a thorough description of the algorithm please visit:
     URL"""
 
-    def __init__(self, f, n_dims, sigma_scaler=1.00001, mu_scaler=100, elitist_level=2):
+    def __init__(self, f, n_dims, sigma_scaler=1.00001, mu_scaler=100, elitist_level=2, ros_flag = False):
         """The QuantumEvAlgorithm class admits a (scalar) function to be optimized. The function
         must be able to generate multiple outputs for multiple inputs of shape (n_samples,n_dimensions).
         The n_dims attribute is to be placed as an input of the class"""
@@ -17,7 +17,7 @@ class QuantumEvAlgorithm:
         self.sigma_scaler = sigma_scaler
         self.mu_scaler = mu_scaler
         self.elitist_level = elitist_level
-
+        self.ros_flag = ros_flag
     def quantum_individual_init(self):
         """Creates a Quantum individual of n_dims features. For each feature mu and sigma are created
          (normal distribution).
@@ -76,8 +76,10 @@ class QuantumEvAlgorithm:
         sigma_scaler = self.sigma_scaler
 
         updated_sigma = (sigma_decider < 1) * sigma / sigma_scaler + (sigma_decider > 1) * sigma * sigma_scaler
-        # if self.cost_function(updated_mu)>10e-10:
-        #     updated_sigma[updated_sigma < 0.01] = updated_sigma[updated_sigma < 0.01] * 1.5
+        if self.cost_function(updated_mu)>10e-10 and self.ros_flag:
+
+            updated_sigma[updated_sigma < 0.01] = updated_sigma[updated_sigma < 0.01] * sigma_scaler
+
 
         Q[0:1] = updated_mu
         Q[1:2] = updated_sigma
@@ -85,7 +87,7 @@ class QuantumEvAlgorithm:
         return Q
 
     def progress(self, count, total, status='Processing'):
-        bar_len = 50
+        bar_len = 100
         filled_len = int(round(bar_len * count / float(total)))
 
         percents = round(100.0 * count / float(total), 1)
@@ -123,9 +125,9 @@ class QuantumEvAlgorithm:
                 function_evaluations[j] = i * (sample_size + (sample_increaser_factor * i) / 2)
                 j += 1
 
-            if np.mod(i, 10000) == 0:
-                print(f'Progress {100*i/N_iterations:.2f}%, Best cost = {output}')
-
+            if np.mod(i, 100) == 0:
+                #print(f'Progress {100*i/N_iterations:.2f}%, Best cost = {output}')
+                self.progress(i,N_iterations,f'Best cost = {output}')
 
         end = time.time()
 
