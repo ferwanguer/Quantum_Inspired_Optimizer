@@ -29,8 +29,8 @@ class QuantumEvAlgorithm:
         # First row: mean (mu)
         # Second row: std deviation (sigma)
         np.random.seed(4)
-        Q = 1 * np.random.rand(2, self.n_dims)
-        Q[1, :] = 1 * np.ones(self.n_dims)
+        Q = -5 + 10 * np.random.rand(2, self.n_dims)
+        Q[1, :] = 5 * np.ones(self.n_dims)
         self.best_of_best = Q[0:1, :]  # Initial definition of best_of_best
         # print(Q)
         return Q
@@ -71,8 +71,8 @@ class QuantumEvAlgorithm:
 
         updated_mu = mu + mu_delta / scaling
 
-        sigma_decider = mu_delta / sigma
-
+        sigma_decider = np.abs(mu_delta) / sigma
+        #print(sigma_decider)
         sigma_scaler = self.sigma_scaler
 
         updated_sigma = (sigma_decider < 1) * sigma / sigma_scaler + (sigma_decider > 1) * sigma * sigma_scaler
@@ -131,7 +131,7 @@ class QuantumEvAlgorithm:
 
         end = time.time()
 
-        print(f'The algorithm took {end - beginning} seconds')
+        print(f'\nThe algorithm took {end - beginning} seconds')
         print(f' min is  = {self.cost_function(best_performer)}')
         print(f'The min is IN = {best_performer}')
 
