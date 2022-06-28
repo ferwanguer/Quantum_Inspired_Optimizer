@@ -30,7 +30,7 @@ class QuantumEvAlgorithm:
         # Second row: std deviation (sigma)
 
         # np.random.seed(4)
-        Q = -5 + 10 * np.random.rand(2, self.n_dims)
+        Q = 1 * np.random.rand(2, self.n_dims)
         Q[1, :] = 5* np.ones(self.n_dims)
 
         self.best_of_best = Q[0:1, :]  # Initial definition of best_of_best
@@ -78,9 +78,9 @@ class QuantumEvAlgorithm:
         sigma_scaler = self.sigma_scaler
 
         updated_sigma = (sigma_decider < 1) * sigma / sigma_scaler + (sigma_decider > 1) * sigma * sigma_scaler
-        if self.cost_function(updated_mu)>10e-10 and self.ros_flag:
-
-            updated_sigma[updated_sigma < 0.01] = updated_sigma[updated_sigma < 0.01] * sigma_scaler
+        if self.cost_function(updated_mu)>10e-2 and self.ros_flag:
+            condition = (updated_sigma < 0.005) * (sigma_decider < 1)
+            updated_sigma[condition] = updated_sigma[condition] * sigma_scaler
 
 
         Q[0:1] = updated_mu
