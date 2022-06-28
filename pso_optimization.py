@@ -10,15 +10,15 @@ n_dimensions = 500
 x_max = 5.12 * np.ones(n_dimensions)
 x_min = - x_max
 bounds = (x_min, x_max)
-iterations = 1000
+iterations = 10000
 n_particles = 1000
 
 optimizer = GlobalBestPSO(n_particles= n_particles, dimensions = n_dimensions,options = options, bounds= bounds)
-optimizer.optimize(f,iters = iterations)
+optimizer.optimize(g,iters = iterations)
 
 cost_history = optimizer.cost_history
 position_history = optimizer.pos_history[0]
-print(position_history)
+
 end = time.time()
 function_evaluations = iterations*n_particles
 
@@ -26,7 +26,8 @@ function_evaluations = iterations*n_particles
 
 optimization_time = np.linspace(0, function_evaluations, num= len(cost_history))
 print(f'The PSO algorithm took {end-start} seconds')
+
+
 results_path = 'Results'
 np.savez(os.path.join(results_path,"testing_pso.npz"), cost_history,position_history,optimization_time ,cost_h = cost_history,
          time = optimization_time, pos_history = position_history)
-print('End')

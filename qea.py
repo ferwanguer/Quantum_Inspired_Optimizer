@@ -28,9 +28,9 @@ class QuantumEvAlgorithm:
          (PENDING)"""
         # First row: mean (mu)
         # Second row: std deviation (sigma)
-        np.random.seed(4)
+        # np.random.seed(4)
         Q = 1 * np.random.rand(2, self.n_dims)
-        Q[1, :] = 1 * np.ones(self.n_dims)
+        Q[1, :] = -5 + 10 * np.ones(self.n_dims)
         self.best_of_best = Q[0:1, :]  # Initial definition of best_of_best
         # print(Q)
         return Q
@@ -48,7 +48,7 @@ class QuantumEvAlgorithm:
         10 best samples."""
         cost = self.cost_function(samples)
         sort_order = np.argsort(cost, axis=0)
-        elitist_level = 3
+        elitist_level = self.elitist_level
         best_performing_sample = np.mean(samples[sort_order[0:elitist_level]], axis=0)[None]
 
         return best_performing_sample
@@ -131,8 +131,7 @@ class QuantumEvAlgorithm:
 
         end = time.time()
 
-        print(f'The algorithm took {end - beginning} seconds')
-        print(f' min is  = {self.cost_function(best_performer)}')
+        print(f'\n \nThe algorithm took {end - beginning} seconds')
         print(f'The min is IN = {best_performer}')
 
         results_path = 'Results'
