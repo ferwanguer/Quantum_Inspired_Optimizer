@@ -41,7 +41,9 @@ class QuantumEvAlgorithm:
         """This method generates n_samples from Q (each sample feature is generated with its correspondent
         mu_i and sigma_i)"""
         samples = np.random.normal(Q[0, :], Q[1, :], size=(n_samples, self.n_dims))
-
+        # print(f'samples shape = {samples.shape}')
+        # print(f'mu shape {Q[0:1,:].shape}')
+        # print(f'append shape {np.append(samples,Q[0:1,:],axis=0).shape}')
         return samples
 
 
@@ -52,6 +54,22 @@ class QuantumEvAlgorithm:
         sort_order = np.argsort(cost, axis=0)
         elitist_level = self.elitist_level
         best_performing_sample = np.mean(samples[sort_order[0:elitist_level]], axis=0)[None]
+
+        return best_performing_sample
+
+    def pondered_elitist_sample_evaluation(self, samples):
+        """This function is analog to the previous one. Instead of choosing the best, it computes the mean of the
+        10 best samples."""
+        cost = self.cost_function(samples)
+        sort_order = np.argsort(cost, axis=0)
+        elitist_level = self.elitist_level
+        elitist_costs = cost[sort_order[0:elitist_level]]
+        # print(f'elitist costs = {elitist_costs}')
+        total_cost = np.sum(elitist_costs)
+        # print(f'totalcost = {total_cost}')
+        weights = 1 - elitist_costs / total_cost
+        # print(f'weights = {weights}')
+        best_performing_sample = np.average(samples[sort_order[0:elitist_level]], axis=0, weights = weights)[None]
 
         return best_performing_sample
 
@@ -118,7 +136,7 @@ class QuantumEvAlgorithm:
             adapted_sample_size = int(sample_size * (1 + sample_increaser_factor * (i / N_iterations)))
 
             samples = self.quantum_sampling(Q, adapted_sample_size)
-            best_performer = self.elitist_sample_evaluation(samples)
+            best_performer = self.pondered_elitist_sample_evaluation(samples)
             Q = self.quantum_update(Q, best_performer)
 
             if np.mod(i, saving_interval) == 0:

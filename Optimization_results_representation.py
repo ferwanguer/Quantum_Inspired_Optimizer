@@ -6,12 +6,12 @@ import os
 import matplotlib
 # DATA IMPORT FROM NPZ FILES
 results_path = 'Results'
-optimization_results = np.load(os.path.join(results_path,'testing_evl2.npz'))
+optimization_results = np.load(os.path.join(results_path,'Pondered.npz'))
 Q_history = optimization_results['pos_history']
 cost_history = optimization_results['cost_h']
 history = optimization_results['time']
 
-optimization_results_2 = np.load(os.path.join(results_path,'testing_evl_top_2.npz'))
+optimization_results_2 = np.load(os.path.join(results_path,'nPondered.npz'))
 cost_history_2 = optimization_results_2['cost_h']
 history_2 = optimization_results_2['time']
 
@@ -19,10 +19,10 @@ history_2 = optimization_results_2['time']
 
 fig = plt.figure(figsize=(6,6))
 fig.suptitle('Logarithmic Convergence of the optimizer')
-ax = plt.subplot(xlim = [0, 30000])
+ax = plt.subplot(xlim = [0, 2000000])
 ax.grid(True)
-# ax.plot(history[:,None], cost_history, label = '2D Example')
-ax.plot(history_2, cost_history_2, label ='pso')
+ax.plot(history[:,None], cost_history, label = 'Pondered')
+ax.plot(history_2, cost_history_2, label ='nPondered')
 ax.set_ylabel("Cost", ha="center", weight="bold")
 ax.set_xlabel("Function evaluations", va="center", weight="bold")
 ax.legend(edgecolor="None")
