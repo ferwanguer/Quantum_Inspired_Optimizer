@@ -116,7 +116,7 @@ class QuantumEvAlgorithm:
         sys.stdout.write('\r%s %s%s %s' % (bar, percents, '%', status))
         sys.stdout.flush()
 
-    def training(self, N_iterations=100000, sample_size=5, sample_increaser_factor=0,
+    def training(self, N_iterations=100000, sample_size=5,
                  save_results = False, filename = 'testing_evl.npz'):
 
         assert(sample_size > self.elitist_level), "Sample size must be greater than elitist level, byF"
@@ -133,9 +133,9 @@ class QuantumEvAlgorithm:
         print('Beginning of the iteration process')
         beginning = time.time()
         for i in range(N_iterations):
-            adapted_sample_size = int(sample_size * (1 + sample_increaser_factor * (i / N_iterations)))
+            # adapted_sample_size = int(sample_size * (1 + sample_increaser_factor * (i / N_iterations)))
 
-            samples = self.quantum_sampling(Q, adapted_sample_size)
+            samples = self.quantum_sampling(Q, sample_size)
             best_performer = self.pondered_elitist_sample_evaluation(samples)
             Q = self.quantum_update(Q, best_performer)
 
@@ -143,7 +143,7 @@ class QuantumEvAlgorithm:
                 Q_history[j, :, :] = Q
                 output = self.cost_function(best_performer)
                 best_performer_marker[j, :] = output
-                function_evaluations[j] = i * (sample_size + (sample_increaser_factor * i) / 2)
+                function_evaluations[j] = i * (sample_size)# + (sample_increaser_factor * i) / 2)
                 j += 1
 
             if np.mod(i, saving_interval) == 0:
