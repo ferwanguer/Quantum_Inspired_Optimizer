@@ -6,7 +6,7 @@ import sys
 class QuantumEvAlgorithm:
     """This object encapsules the necessary methods to make a Quantum-Inspired
     optimization algorithm. For a thorough description of the algorithm please visit:
-    URL"""
+    URL. FWG"""
 
     def __init__(self, f, n_dims, sigma_scaler=1.00001, mu_scaler=100, elitist_level=2, ros_flag = False):
         """The QuantumEvAlgorithm class admits a (scalar) function to be optimized. The function
