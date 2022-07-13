@@ -133,10 +133,13 @@ class QuantumEvAlgorithm:
         print('Beginning of the iteration process')
         beginning = time.time()
         for i in range(N_iterations):
+
             # adapted_sample_size = int(sample_size * (1 + sample_increaser_factor * (i / N_iterations)))
 
             samples = self.quantum_sampling(Q, sample_size)
             best_performer = self.pondered_elitist_sample_evaluation(samples)
+
+
             Q = self.quantum_update(Q, best_performer)
 
             if np.mod(i, saving_interval) == 0:
@@ -149,6 +152,7 @@ class QuantumEvAlgorithm:
             if np.mod(i, saving_interval) == 0:
                 #print(f'Progress {100*i/N_iterations:.2f}%, Best cost = {output}')
                 self.progress(i,N_iterations,f'Best cost = {output}')
+
 
         end = time.time()
 
