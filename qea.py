@@ -59,7 +59,7 @@ class QuantumEvAlgorithm:
 
     def pondered_elitist_sample_evaluation(self, samples):
         """This function is analog to the previous one. Instead of choosing the best, it computes the mean of the
-        10 best samples."""
+        10 best samples. It may be pending to orient it as a maximization problem. Still yet to decide"""
         cost = self.cost_function(samples)
         sort_order = np.argsort(cost, axis=0)
         elitist_level = self.elitist_level
