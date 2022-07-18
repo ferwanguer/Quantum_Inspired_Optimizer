@@ -40,7 +40,8 @@ class QuantumEvAlgorithm:
     def quantum_sampling(self, Q, n_samples):
         """This method generates n_samples from Q (each sample feature is generated with its correspondent
         mu_i and sigma_i)"""
-        samples = np.random.normal(Q[0, :], Q[1, :], size=(n_samples, self.n_dims))
+        samples = np.minimum(np.maximum(np.random.normal(Q[0, :], Q[1, :], size=(n_samples, self.n_dims)),-1),+1)
+
         # print(f'samples shape = {samples.shape}')
         # print(f'mu shape {Q[0:1,:].shape}')
         # print(f'append shape {np.append(samples,Q[0:1,:],axis=0).shape}')
