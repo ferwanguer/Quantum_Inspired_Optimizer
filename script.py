@@ -8,3 +8,4 @@ optimizer = QuantumEvAlgorithm(g, n_dims = 200,sigma_scaler = 1.0001,
 
 optimizer.training(N_iterations=200000, sample_size= 4, save_results= False,filename='nPondered.npz')
 
+# Mañana comenzar a sacar resultados. Me gustaría.
