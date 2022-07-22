@@ -6,12 +6,12 @@ import os
 import matplotlib
 # DATA IMPORT FROM NPZ FILES
 results_path = 'Results'
-optimization_results = np.load(os.path.join(results_path,'Pondered.npz'))
+optimization_results = np.load(os.path.join(results_path,'qea_testing_sigma_0005.npz'))
 Q_history = optimization_results['pos_history']
 cost_history = optimization_results['cost_h']
 history = optimization_results['time']
 
-optimization_results_2 = np.load(os.path.join(results_path,'nPondered.npz'))
+optimization_results_2 = np.load(os.path.join(results_path,'testing_pso.npz'))
 cost_history_2 = optimization_results_2['cost_h']
 history_2 = optimization_results_2['time']
 

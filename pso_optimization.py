@@ -6,12 +6,12 @@ import os
 #Testing the activity commit
 start = time.time()
 options = {'c1': 0.5, 'c2': 0.3, 'w':0.9}
-n_dimensions = 10
+n_dimensions = 50
 x_max = 5.12 * np.ones(n_dimensions)
 x_min = - x_max
 bounds = (x_min, x_max)
 iterations = 1000
-n_particles = 500
+n_particles = 2000
 
 optimizer = GlobalBestPSO(n_particles= n_particles, dimensions = n_dimensions,options = options, bounds= bounds)
 optimizer.optimize(g,iters = iterations)
