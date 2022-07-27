@@ -125,7 +125,7 @@ class QuantumEvAlgorithm:
 
 
         Q = self.quantum_individual_init()
-        saving_interval = 1000
+        saving_interval = 50
 
         Q_history = np.zeros((int(N_iterations / saving_interval), 2, self.n_dims))
         best_performer_marker = np.zeros((int(N_iterations / saving_interval), 1))

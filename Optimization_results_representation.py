@@ -4,6 +4,15 @@ from matplotlib.patches import Ellipse
 from matplotlib.pyplot import cm
 import os
 import matplotlib
+from matplotlib import rcParams
+# rcParams['font.family'] = 'sans-serif'
+# rcParams['font.sans-serif'] = ['Arial']
+from matplotlib.gridspec import GridSpec
+from matplotlib.patches import Rectangle
+from matplotlib.patches import ConnectionPatch
+from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
+from mpl_toolkits.axes_grid1.inset_locator import mark_inset
+import latex
 # DATA IMPORT FROM NPZ FILES
 results_path = 'Results'
 optimization_results = np.load(os.path.join(results_path,'qea_testing_sigma_0001.npz'))
@@ -15,39 +24,125 @@ optimization_results_2 = np.load(os.path.join(results_path,'testing_pso.npz'))
 cost_history_2 = optimization_results_2['cost_h']
 history_2 = optimization_results_2['time']
 
+optimization_results_3 = np.load(os.path.join(results_path,'qea_testing.npz'))
+Q_history_3 = optimization_results_3['pos_history']
+cost_history_3 = optimization_results_3['cost_h']
+history_3 = optimization_results_3['time']
+
+optimization_results_4 = np.load(os.path.join(results_path,'qea_testing0002.npz'))
+Q_history_4 = optimization_results_4['pos_history']
+cost_history_4 = optimization_results_4['cost_h']
+history_4 = optimization_results_4['time']
+
+
+
 #FIRST FIGURE -> LOGARITHMIC COST EVOLUTION WRT TIME(SECONDS)
 
-fig = plt.figure(figsize=(6,6))
-fig.suptitle('Logarithmic Convergence of the optimizer')
-ax = plt.subplot(xlim = [0, 2000000])
-ax.grid(True)
-ax.plot(history[:,None], cost_history, label = 'Pondered')
-ax.plot(history_2, cost_history_2, label ='nPondered')
-ax.set_ylabel("Cost", ha="center", weight="bold")
-ax.set_xlabel("Function evaluations", va="center", weight="bold")
-ax.legend(edgecolor="None")
+fig = plt.figure(figsize=(8,6))
+# fig.suptitle(r'Logarithmic Convergence of the optimizer')
+
+
+ax = plt.subplot(1,3, 3,xlim = [0, 2_000_000],xticks=[0, 1_000_000, 2_000_000],
+    xticklabels=["0", "1M", "2M"] ,ylim=[1e-15, 100])
 plt.yscale('log')
+
+ax.plot(history[:,None], cost_history, label = 'N-QEA',color = "#CC5DE8")
+ax.plot(history_2, cost_history_2, label ='PSO', color = "#82C91E")
+# ax.set_ylabel("Logarithmic cost", ha="center", weight="bold")
+ax.set_xlabel("Function evaluations", va="top")
+ax.set_title("(c)")
+ax.grid(True, "minor", color="0.85", linewidth=0.50, zorder=-20)
+ax.grid(True, "major", color="0.65", linewidth=0.85, zorder=-10)
+ax.tick_params(which="both", labelleft=False, left=False)
+ax.text(500_000, 1e-14, "$\\rho_\sigma =1.0001 $", color="#CC5DE8", zorder = -30)
+ax.legend(edgecolor="None")
+
+
+##############################################################################
+
+ax1 = plt.subplot(1,3, 1,xlim = [0, 2_000_000],xticks=[0, 1_000_000, 2_000_000],
+    xticklabels=["0", "1M", "2M"] , ylim=[1e-15, 100])
+plt.yscale('log')
+ax1.plot(history_3[:,None], cost_history_3, label = 'N-QEA',color = "#CC5DE8")
+ax1.plot(history_2, cost_history_2, label ='PSO', color = "#82C91E")
+ax1.set_ylabel("Logarithmic cost", ha="center", weight="bold")
+ax1.set_xlabel("Function evaluations", va="top")
+ax1.set_title("(a)")
+ax1.grid(True, "minor", color="0.85", linewidth=0.50, zorder=-20)
+ax1.grid(True, "major", color="0.65", linewidth=0.85, zorder=-10)
+ax1.text(250_000, 1e-14, "$\\rho_\sigma =1.001 $", color="#CC5DE8", zorder = -30)
+ax1.legend(edgecolor="None")
+
+########################################################################################
+
+ax2 = plt.subplot(1,3, 2,xlim = [0, 2_000_000],xticks=[0, 1_000_000, 2_000_000],
+    xticklabels=["0", "1M", "2M"] , ylim=[1e-15, 100])
+plt.yscale('log')
+ax2.plot(history_4[:,None], cost_history_4, label = 'N-QEA',color = "#CC5DE8")
+ax2.plot(history_2, cost_history_2, label ='PSO', color = "#82C91E")
+ax2.set_title("(b)")
+#ax2.set_ylabel("Logarithmic cost", ha="center", weight="bold")
+ax2.set_xlabel("Function evaluations", va="top")
+ax2.grid(True, "minor", color="0.85", linewidth=0.50, zorder=-20)
+ax2.grid(True, "major", color="0.65", linewidth=0.85, zorder=-10)
+ax2.tick_params(which="both", labelleft=False, left=False)
+ax2.text(800_000, 1e-14, "$\\rho_\sigma =1.0002 $", color="#CC5DE8", zorder = -30)
+ax2.legend(edgecolor="None")
+
+
+
+axins = zoomed_inset_axes(ax1, zoom = 150, loc="center right")
+axins.plot(history_3[:,None], cost_history_3,'-',color = "#CC5DE8")
+axins.set_xlim(50000, 60000)
+axins.set_xticks([])
+axins.set_ylim(1e-5, 6e-5)
+# axins.set_adjustable("box")
+axins.set_yticks([])
+axins.set_aspect(100000000)
+
+
+rect = Rectangle(
+    (100, 4e-6),
+    200_000,
+    2e-5,
+    edgecolor="black",
+    facecolor="None",
+    linestyle="--",
+    linewidth=0.75,
+)
+ax1.add_patch(rect)
+
+con = ConnectionPatch(
+    xyA=(200_000, 1e-5),
+    coordsA=ax1.transData,
+    xyB=(0.22, 0.55),
+    coordsB=ax1.transAxes,
+    linestyle="--",
+    linewidth=0.75,
+    patchA=rect,
+    arrowstyle="->",
+)
+fig.add_artist(con)
+
 plt.show()
-
-
 
 # Q EVOLUTION OF THE 10 FIRST FEATURES OF THE QEA ALGORITHM.
 
-fig_1 = plt.figure(figsize=(8, 8))
-fig_1.suptitle('Features distribution convergence')
-j = 0
-for i in range(2):
-    mu_evolution = Q_history[:, 0, i]
-    std_evolution = Q_history[:, 1, i]
-    ax_1 = plt.subplot(1, 2, j+1)
-    ax_1.set_ylim(-1,1)
-    ax_1.set_title(f'Feature {i}')
-    ax_1.fill_between(history,mu_evolution + std_evolution, mu_evolution - std_evolution, facecolor="C0", alpha=0.25, zorder=-40)
-    ax_1.plot(history, mu_evolution, color="C0", zorder=-30)
-    j+=1
-#ax_1.set_xticks([]), ax_1.set_yticks([])
-
-plt.show()
+# fig_1 = plt.figure(figsize=(8, 8))
+# fig_1.suptitle('Features distribution convergence')
+# j = 0
+# for i in range(2):
+#     mu_evolution = Q_history[:, 0, i]
+#     std_evolution = Q_history[:, 1, i]
+#     ax_1 = plt.subplot(1, 2, j+1)
+#     ax_1.set_ylim(-1,1)
+#     ax_1.set_title(f'Feature {i}')
+#     ax_1.fill_between(history,mu_evolution + std_evolution, mu_evolution - std_evolution, facecolor="C0", alpha=0.25, zorder=-40)
+#     ax_1.plot(history, mu_evolution, color="C0", zorder=-30)
+#     j+=1
+# #ax_1.set_xticks([]), ax_1.set_yticks([])
+#
+# plt.show()
 
 #Explanation part to paint.
 
