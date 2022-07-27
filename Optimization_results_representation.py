@@ -6,7 +6,7 @@ import os
 import matplotlib
 from matplotlib import rcParams
 # rcParams['font.family'] = 'sans-serif'
-# rcParams['font.sans-serif'] = ['Arial']
+rcParams['font.sans-serif'] = ['Arial']
 from matplotlib.gridspec import GridSpec
 from matplotlib.patches import Rectangle
 from matplotlib.patches import ConnectionPatch
@@ -128,21 +128,28 @@ plt.show()
 
 # Q EVOLUTION OF THE 10 FIRST FEATURES OF THE QEA ALGORITHM.
 
-# fig_1 = plt.figure(figsize=(8, 8))
+fig_1 = plt.figure(figsize=(8, 3))
 # fig_1.suptitle('Features distribution convergence')
-# j = 0
-# for i in range(2):
-#     mu_evolution = Q_history[:, 0, i]
-#     std_evolution = Q_history[:, 1, i]
-#     ax_1 = plt.subplot(1, 2, j+1)
-#     ax_1.set_ylim(-1,1)
-#     ax_1.set_title(f'Feature {i}')
-#     ax_1.fill_between(history,mu_evolution + std_evolution, mu_evolution - std_evolution, facecolor="C0", alpha=0.25, zorder=-40)
-#     ax_1.plot(history, mu_evolution, color="C0", zorder=-30)
-#     j+=1
-# #ax_1.set_xticks([]), ax_1.set_yticks([])
-#
-# plt.show()
+j = 0
+N=7
+for i in range(N):
+    mu_evolution = Q_history_3[:, 0, i]
+    std_evolution = Q_history_3[:, 1, i]
+    ax_1 = plt.subplot(1, N, j+1)
+    ax_1.set_ylim(-10,10)
+    ax_1.set_xlim(0,20000)
+    ax_1.set_title(f'Feature {i}')
+    if i == 0:
+        ax_1.set_yticks([-10,-5,0,5,10])
+    else :
+        ax_1.set_yticks([])
+    ax_1.set_xticks([20000])
+    ax_1.fill_between(history_3,mu_evolution + std_evolution, mu_evolution - std_evolution, facecolor="C0", alpha=0.25, zorder=-40)
+    ax_1.plot(history_3, mu_evolution, color="C0", zorder=-30)
+    j+=1
+#ax_1.set_xticks([]), ax_1.set_yticks([])
+
+plt.show()
 
 #Explanation part to paint.
 
