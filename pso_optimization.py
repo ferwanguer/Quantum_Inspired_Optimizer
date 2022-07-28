@@ -29,5 +29,5 @@ print(f'The PSO algorithm took {end-start} seconds')
 
 
 results_path = 'Results'
-np.savez(os.path.join(results_path,"testing_pso.npz"), cost_history,position_history,optimization_time ,cost_h = cost_history,
-         time = optimization_time, pos_history = position_history)
+# np.savez(os.path.join(results_path,"testing_pso.npz"), cost_history,position_history,optimization_time ,cost_h = cost_history,
+#          time = optimization_time, pos_history = position_history)

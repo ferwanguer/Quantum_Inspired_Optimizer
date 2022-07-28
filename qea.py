@@ -138,7 +138,7 @@ class QuantumEvAlgorithm:
             # adapted_sample_size = int(sample_size * (1 + sample_increaser_factor * (i / N_iterations)))
 
             samples = self.quantum_sampling(Q, sample_size)
-            best_performer = self.pondered_elitist_sample_evaluation(samples)
+            best_performer = self.elitist_sample_evaluation(samples)
             Q = self.quantum_update(Q, best_performer)
 
             if np.mod(i, saving_interval) == 0:

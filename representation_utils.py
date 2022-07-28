@@ -24,7 +24,7 @@ optimization_results_2 = np.load(os.path.join(results_path,'testing_pso.npz'))
 cost_history_2 = optimization_results_2['cost_h']
 history_2 = optimization_results_2['time']
 
-optimization_results_3 = np.load(os.path.join(results_path,'qea_testingm.npz'))
+optimization_results_3 = np.load(os.path.join(results_path,'qea_testingmm.npz'))
 Q_history_3 = optimization_results_3['pos_history']
 cost_history_3 = optimization_results_3['cost_h']
 history_3 = optimization_results_3['time']

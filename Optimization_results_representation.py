@@ -91,14 +91,14 @@ ax2.legend(edgecolor="None")
 
 
 
-axins = zoomed_inset_axes(ax1, zoom = 150, loc="center right")
-axins.plot(history_3[:,None], cost_history_3,'-',color = "#CC5DE8")
-axins.set_xlim(50000, 60000)
-axins.set_xticks([])
-axins.set_ylim(1e-5, 6e-5)
-# axins.set_adjustable("box")
-axins.set_yticks([])
-axins.set_aspect(100000000)
+# axins = zoomed_inset_axes(ax1, zoom = 150, loc="center right")
+# axins.plot(history_3[:,None], cost_history_3,'-',color = "#CC5DE8")
+# axins.set_xlim(50000, 60000)
+# axins.set_xticks([])
+# axins.set_ylim(1e-5, 6e-5)
+# # axins.set_adjustable("box")
+# axins.set_yticks([])
+# axins.set_aspect(100000000)
 
 
 rect = Rectangle(
