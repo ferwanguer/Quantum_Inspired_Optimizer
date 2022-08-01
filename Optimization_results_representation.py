@@ -34,11 +34,16 @@ Q_history_4 = optimization_results_4['pos_history']
 cost_history_4 = optimization_results_4['cost_h']
 history_4 = optimization_results_4['time']
 
+optimization_results_5 = np.load(os.path.join(results_path,'testing_genetic_500.npz'))
+# Q_history_5 = optimization_results_5['pos_history']
+cost_history_5 = optimization_results_5['cost_h']
+history_5 = optimization_results_5['eval']
+
 
 
 #FIRST FIGURE -> LOGARITHMIC COST EVOLUTION WRT TIME(SECONDS)
 
-fig = plt.figure(figsize=(8,6))
+fig = plt.figure(figsize=(8,4))
 # fig.suptitle(r'Logarithmic Convergence of the optimizer')
 
 
@@ -48,6 +53,7 @@ plt.yscale('log')
 
 ax.plot(history[:,None], cost_history, label = 'N-QEA',color = "#CC5DE8")
 ax.plot(history_2, cost_history_2, label ='PSO', color = "#82C91E")
+ax.plot(history_5, cost_history_5, label ='Genetic', color = "#FF7043")
 # ax.set_ylabel("Logarithmic cost", ha="center", weight="bold")
 ax.set_xlabel("Function evaluations", va="top")
 ax.set_title("(c)")
@@ -65,13 +71,14 @@ ax1 = plt.subplot(1,3, 1,xlim = [0, 2_000_000],xticks=[0, 1_000_000, 2_000_000],
 plt.yscale('log')
 ax1.plot(history_3[:,None], cost_history_3, label = 'N-QEA',color = "#CC5DE8")
 ax1.plot(history_2, cost_history_2, label ='PSO', color = "#82C91E")
+ax1.plot(history_5, cost_history_5, label ='Genetic', color = "#FF7043")
 ax1.set_ylabel("Logarithmic cost", ha="center", weight="bold")
 ax1.set_xlabel("Function evaluations", va="top")
 ax1.set_title("(a)")
 ax1.grid(True, "minor", color="0.85", linewidth=0.50, zorder=-20)
 ax1.grid(True, "major", color="0.65", linewidth=0.85, zorder=-10)
 ax1.text(250_000, 1e-14, "$\\rho_\sigma =1.001 $", color="#CC5DE8", zorder = -30)
-ax1.legend(edgecolor="None")
+# ax1.legend(edgecolor="None")
 
 ########################################################################################
 
@@ -80,6 +87,7 @@ ax2 = plt.subplot(1,3, 2,xlim = [0, 2_000_000],xticks=[0, 1_000_000, 2_000_000],
 plt.yscale('log')
 ax2.plot(history_4[:,None], cost_history_4, label = 'N-QEA',color = "#CC5DE8")
 ax2.plot(history_2, cost_history_2, label ='PSO', color = "#82C91E")
+ax2.plot(history_5, cost_history_5, label ='Genetic', color = "#FF7043")
 ax2.set_title("(b)")
 #ax2.set_ylabel("Logarithmic cost", ha="center", weight="bold")
 ax2.set_xlabel("Function evaluations", va="top")
@@ -87,18 +95,18 @@ ax2.grid(True, "minor", color="0.85", linewidth=0.50, zorder=-20)
 ax2.grid(True, "major", color="0.65", linewidth=0.85, zorder=-10)
 ax2.tick_params(which="both", labelleft=False, left=False)
 ax2.text(800_000, 1e-14, "$\\rho_\sigma =1.0002 $", color="#CC5DE8", zorder = -30)
-ax2.legend(edgecolor="None")
+# ax2.legend(edgecolor="None")
 
 
 
-# axins = zoomed_inset_axes(ax1, zoom = 150, loc="center right")
-# axins.plot(history_3[:,None], cost_history_3,'-',color = "#CC5DE8")
-# axins.set_xlim(50000, 60000)
-# axins.set_xticks([])
-# axins.set_ylim(1e-5, 6e-5)
-# # axins.set_adjustable("box")
-# axins.set_yticks([])
-# axins.set_aspect(100000000)
+axins = zoomed_inset_axes(ax1, zoom = 150, loc="center right")
+axins.plot(history_3[:,None], cost_history_3,'-',color = "#CC5DE8")
+axins.set_xlim(50000, 60000)
+axins.set_xticks([])
+axins.set_ylim(1e-5, 6e-5)
+# axins.set_adjustable("box")
+axins.set_yticks([])
+axins.set_aspect(100000000)
 
 
 rect = Rectangle(

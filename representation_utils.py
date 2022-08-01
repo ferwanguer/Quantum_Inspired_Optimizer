@@ -15,21 +15,21 @@ from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 import latex
 # DATA IMPORT FROM NPZ FILES
 results_path = 'Results'
-optimization_results = np.load(os.path.join(results_path,'qea_testing_sigma_0001.npz'))
+optimization_results = np.load(os.path.join(results_path,'qea_testing_50.npz'))
 Q_history = optimization_results['pos_history']
 cost_history = optimization_results['cost_h']
 history = optimization_results['time']
 
-optimization_results_2 = np.load(os.path.join(results_path,'testing_pso.npz'))
+optimization_results_2 = np.load(os.path.join(results_path,'qea_testing_10000.npz'))
 cost_history_2 = optimization_results_2['cost_h']
 history_2 = optimization_results_2['time']
 
-optimization_results_3 = np.load(os.path.join(results_path,'qea_testingmm.npz'))
+optimization_results_3 = np.load(os.path.join(results_path,'qea_testing_5002.npz'))
 Q_history_3 = optimization_results_3['pos_history']
 cost_history_3 = optimization_results_3['cost_h']
 history_3 = optimization_results_3['time']
 
-optimization_results_4 = np.load(os.path.join(results_path,'qea_testing0002.npz'))
+optimization_results_4 = np.load(os.path.join(results_path,'qea_testing3.npz'))
 Q_history_4 = optimization_results_4['pos_history']
 cost_history_4 = optimization_results_4['cost_h']
 history_4 = optimization_results_4['time']
@@ -60,18 +60,31 @@ fig = plt.figure(figsize=(8,5))
 
 ##############################################################################
 
-ax1 = plt.subplot(1,1, 1,xlim = [0, 1_000_000],xticks=[0, 500_000, 1_000_000],
-    xticklabels=["0", "500K", "1M"] , ylim=[1e-4, 100])
+ax1 = plt.subplot(1,1, 1,xlim = [0, 5_000_000],xticks=[ 250_000, 750_000,  3_900_000, 4_400_000],
+    xticklabels=[ "0.25M", "0.75M", "3.9M","4.4M"] , ylim=[1e-13, 100])
+# ax1.set_xticks([])
+# ax1.set_yticks([])
 plt.yscale('log')
-ax1.plot(history_3[:,None], cost_history_3, label = 'N-QEA',color = "#CC5DE8")
-ax1.plot(history_2, cost_history_2, label ='PSO', color = "#82C91E")
+ax1.plot(history_2[:,None], cost_history_2, label = 'N-QEA $D= 10000$',color = "#FFA726")
+ax1.plot(history_3[:,None], cost_history_3, label = 'N-QEA $D= 5000$',color = "#EF5350")
+ax1.plot(history_4[:,None], cost_history_4, label = 'N-QEA $D= 500$',color = "#5C6BC0")
+ax1.plot(history[:,None], cost_history, label = 'N-QEA $D= 50$',color = "#66BB6A")
+
+# ax1.plot(history_2, cost_history_2, label ='PSO', color = "#82C91E")
 ax1.set_ylabel("Log cost", ha="center", weight="bold")
 ax1.set_xlabel("Function evaluations", va="top")
 # ax1.set_title("(a)")
-ax1.grid(True, "minor", color="0.85", linewidth=0.50, zorder=-20)
+# ax1.grid(True, "minor", color="0.85", linewidth=0.50, zorder=-20)
 ax1.grid(True, "major", color="0.65", linewidth=0.85, zorder=-10)
-ax1.text(250_000, 1e-14, "$\\rho_\sigma =1.001 $", color="#CC5DE8", zorder = -30)
+# ax1.text(50_000, 1e-2, "$\\rho_\sigma =1.0001 $", color="#CC5DE8", zorder = -30)
 ax1.legend(edgecolor="None")
+
+
+
+
+
+
+
 
 ########################################################################################
 #
@@ -131,25 +144,25 @@ plt.show()
 fig_1 = plt.figure(figsize=(8, 3))
 # fig_1.suptitle('Features distribution convergence')
 j = 0
-N=7
-for i in range(N):
-    mu_evolution = Q_history_3[:, 0, i]
-    std_evolution = Q_history_3[:, 1, i]
-    ax_1 = plt.subplot(1, N, j+1)
-    ax_1.set_ylim(-10,10)
-    ax_1.set_xlim(0,20000)
-    ax_1.set_title(f'Feature {i}')
-    if i == 0:
-        ax_1.set_yticks([-10,-5,0,5,10])
-    else :
-        ax_1.set_yticks([])
-    ax_1.set_xticks([20000])
-    ax_1.fill_between(history_3,mu_evolution + std_evolution, mu_evolution - std_evolution, facecolor="C0", alpha=0.25, zorder=-40)
-    ax_1.plot(history_3, mu_evolution, color="C0", zorder=-30)
-    j+=1
-#ax_1.set_xticks([]), ax_1.set_yticks([])
+# N=5
+# for i in range(N):
+#     mu_evolution = Q_history_3[:, 0, i]
+#     std_evolution = Q_history_3[:, 1, i]
+#     ax_1 = plt.subplot(1, N, j+1)
+#     ax_1.set_ylim(-10,10)
+#     ax_1.set_xlim(0,500000)
+#     ax_1.set_title(f'Feature {i}')
+#     if i == 0:
+#         ax_1.set_yticks([-10,-5,0,5,10])
+#     else :
+#         ax_1.set_yticks([])
+#     ax_1.set_xticks([200000])
+#     ax_1.fill_between(history_3,mu_evolution + std_evolution, mu_evolution - std_evolution, facecolor="C0", alpha=0.25, zorder=-40)
+#     ax_1.plot(history_3, mu_evolution, color="C0", zorder=-30)
+#     j+=1
+# #ax_1.set_xticks([]), ax_1.set_yticks([])
 
-plt.show()
+# plt.show()
 
 #Explanation part to paint.
 

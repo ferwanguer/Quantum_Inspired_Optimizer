@@ -2,13 +2,13 @@ import numpy as np
 import time
 import os
 import sys
-
+from test_functions import mse,f
 class QuantumEvAlgorithm:
     """This object encapsules the necessary methods to make a Quantum-Inspired
     optimization algorithm. For a thorough description of the algorithm please visit:
     URL. FWG"""
 
-    def __init__(self, f, n_dims, sigma_scaler=1.00001, mu_scaler=100, elitist_level=2, ros_flag = False):
+    def __init__(self, f, n_dims, sigma_scaler=1.00001, mu_scaler=100, elitist_level=2,error_ev = mse ,ros_flag = False):
         """The QuantumEvAlgorithm class admits a (scalar) function to be optimized. The function
         must be able to generate multiple outputs for multiple inputs of shape (n_samples,n_dimensions).
         The n_dims attribute is to be placed as an input of the class"""
@@ -18,6 +18,7 @@ class QuantumEvAlgorithm:
         self.mu_scaler = mu_scaler
         self.elitist_level = elitist_level
         self.ros_flag = ros_flag
+        self.error = error_ev
     def quantum_individual_init(self):
         """Creates a Quantum individual of n_dims features. For each feature mu and sigma are created
          (normal distribution).
@@ -150,7 +151,7 @@ class QuantumEvAlgorithm:
 
             if np.mod(i, saving_interval) == 0:
                 #print(f'Progress {100*i/N_iterations:.2f}%, Best cost = {output}')
-                self.progress(i,N_iterations,f'Best cost = {output}')
+                self.progress(i,N_iterations,f'Best cost = {output}, RMSE = {self.error(best_performer)}')
 
 
         end = time.time()
