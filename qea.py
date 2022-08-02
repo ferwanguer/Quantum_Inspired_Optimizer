@@ -109,7 +109,7 @@ class QuantumEvAlgorithm:
         return Q
 
     def progress(self, count, total, status='Processing'):
-        bar_len = 100
+        bar_len = 30
         filled_len = int(round(bar_len * count / float(total)))
 
         percents = round(100.0 * count / float(total), 1)
@@ -126,7 +126,7 @@ class QuantumEvAlgorithm:
 
 
         Q = self.quantum_individual_init()
-        saving_interval = 100
+        saving_interval = 500
 
         Q_history = np.zeros((int(N_iterations / saving_interval), 2, self.n_dims))
         best_performer_marker = np.zeros((int(N_iterations / saving_interval), 1))
