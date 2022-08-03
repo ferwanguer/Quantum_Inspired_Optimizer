@@ -1,7 +1,7 @@
 import numpy as np
 
 """This script defines the functions that are to be optimized"""
-
+#x = np.zeros(4)
 
 def f(x: np.ndarray):
     """n-dimensional paraboloid definition. For the first test of the optimization algorithm."""
@@ -64,3 +64,17 @@ def rosenbrock(x: np.ndarray):
     aux_2 = np.square(x_i - 1)
     rosenbrock = np.sum(aux_1 + aux_2, axis=1)
     return rosenbrock
+
+def griewank(x:np.ndarray):
+
+    if x.ndim == 1:
+        x = x[None]
+
+    n_dims = x.shape[1]
+    dims = np.arange(1,n_dims+1)
+    x_squared = np.square(x)
+    aux = np.cos(np.divide(x,np.sqrt(dims)))
+    griewank = np.sum(x_squared, axis=1)/4000 - np.prod(aux, axis=1) + 1
+    
+    return griewank
+
