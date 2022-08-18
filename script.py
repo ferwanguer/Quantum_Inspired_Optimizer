@@ -8,4 +8,3 @@ optimizer = QuantumEvAlgorithm(griewank, n_dims = 100,sigma_scaler = 1.001,
 
 optimizer.training(N_iterations=40000, sample_size= 20, save_results= True,filename='q0.npz')
 
-#Vuelta de vacaciones. Esta tarde saco resultados
