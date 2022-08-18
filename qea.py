@@ -31,8 +31,8 @@ class QuantumEvAlgorithm:
         # Second row: std deviation (sigma)
 
         # np.random.seed(4)
-        Q = -600 + 600 * np.random.rand(2, self.n_dims)
-        Q[1, :] = 600* np.ones(self.n_dims)
+        Q = -5 + 5 * np.random.rand(2, self.n_dims)
+        Q[1, :] = 5* np.ones(self.n_dims)
 
         self.best_of_best = Q[0:1, :]  # Initial definition of best_of_best
         # print(Q)
@@ -149,7 +149,7 @@ class QuantumEvAlgorithm:
                 function_evaluations[j] = i * (sample_size)# + (sample_increaser_factor * i) / 2)
                 j += 1
 
-            if np.mod(i, saving_interval) == 0:
+            if np.mod(i, 500) == 0:
                 #print(f'Progress {100*i/N_iterations:.2f}%, Best cost = {output}')
                 self.progress(i,N_iterations,f'Best cost = {output}, RMSE = {self.error(best_performer)}')
 
