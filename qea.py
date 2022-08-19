@@ -2,13 +2,13 @@ import numpy as np
 import time
 import os
 import sys
-
+from test_functions import mse,f
 class QuantumEvAlgorithm:
     """This object encapsules the necessary methods to make a Quantum-Inspired
     optimization algorithm. For a thorough description of the algorithm please visit:
     URL. FWG"""
 
-    def __init__(self, f, n_dims, sigma_scaler=1.00001, mu_scaler=100, elitist_level=2, ros_flag = False):
+    def __init__(self, f, n_dims, sigma_scaler=1.00001, mu_scaler=100, elitist_level=2,error_ev = mse ,ros_flag = False, saving_interval = 10):
         """The QuantumEvAlgorithm class admits a (scalar) function to be optimized. The function
         must be able to generate multiple outputs for multiple inputs of shape (n_samples,n_dimensions).
         The n_dims attribute is to be placed as an input of the class"""
@@ -18,6 +18,8 @@ class QuantumEvAlgorithm:
         self.mu_scaler = mu_scaler
         self.elitist_level = elitist_level
         self.ros_flag = ros_flag
+        self.error = error_ev
+        self.saving_interval = saving_interval
     def quantum_individual_init(self):
         """Creates a Quantum individual of n_dims features. For each feature mu and sigma are created
          (normal distribution).
@@ -108,7 +110,7 @@ class QuantumEvAlgorithm:
         return Q
 
     def progress(self, count, total, status='Processing'):
-        bar_len = 100
+        bar_len = 30
         filled_len = int(round(bar_len * count / float(total)))
 
         percents = round(100.0 * count / float(total), 1)
@@ -125,42 +127,44 @@ class QuantumEvAlgorithm:
 
 
         Q = self.quantum_individual_init()
-        saving_interval = 50
+         
 
-        Q_history = np.zeros((int(N_iterations / saving_interval), 2, self.n_dims))
-        best_performer_marker = np.zeros((int(N_iterations / saving_interval), 1))
-        function_evaluations = np.zeros(int(N_iterations / saving_interval))
+        Q_history = np.zeros((1 + int(N_iterations / self.saving_interval), 2, self.n_dims))
+       
+        best_performer_marker = np.zeros((1+int(N_iterations / self.saving_interval), 1))
+        function_evaluations = np.zeros(1+int(N_iterations / self.saving_interval))
 
         print('Beginning of the iteration process')
         beginning = time.time()
-        for i in range(N_iterations):
+        for i in range(N_iterations+1):
 
             # adapted_sample_size = int(sample_size * (1 + sample_increaser_factor * (i / N_iterations)))
 
             samples = self.quantum_sampling(Q, sample_size)
-            best_performer = self.pondered_elitist_sample_evaluation(samples)
+            best_performer = self.elitist_sample_evaluation(samples)
             Q = self.quantum_update(Q, best_performer)
 
-            if np.mod(i, saving_interval) == 0:
+            if np.mod(i, self.saving_interval) == 0:
                 Q_history[j, :, :] = Q
                 output = self.cost_function(best_performer)
                 best_performer_marker[j, :] = output
                 function_evaluations[j] = i * (sample_size)# + (sample_increaser_factor * i) / 2)
                 j += 1
+                
 
-            if np.mod(i, saving_interval) == 0:
+            if np.mod(i, 5) == 0:
                 #print(f'Progress {100*i/N_iterations:.2f}%, Best cost = {output}')
-                self.progress(i,N_iterations,f'Best cost = {output}')
+                self.progress(i,N_iterations,f'Best cost = {self.cost_function(best_performer)}, RMSE = {self.error(best_performer)}')
 
 
         end = time.time()
 
 
 
-        print(f'\nThe algorithm took {end - beginning} seconds')
-        print(f' min is  = {self.cost_function(best_performer)}')
+        print(f' \n \n The algorithm took {end - beginning} seconds \n \n ')
+        #print(f' min is  = {self.cost_function(best_performer)}')
 
-        print(f'The min is IN = {best_performer}')
+        #print(f'The min is IN = {best_performer} \n \n ')
 
         results_path = 'Results'
         if save_results:

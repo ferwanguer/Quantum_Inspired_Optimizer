@@ -1,7 +1,7 @@
 import numpy as np
 
 """This script defines the functions that are to be optimized"""
-
+#x = np.zeros(4)
 
 def f(x: np.ndarray):
     """n-dimensional paraboloid definition. For the first test of the optimization algorithm."""
@@ -10,14 +10,21 @@ def f(x: np.ndarray):
 
     n_dims = x.shape[1]
 
-    min_value = 0.8 * np.ones((1, n_dims))
+    min_value = 0.0 * np.ones((1, n_dims))
     f = np.sum(np.square(x - min_value), axis=1)
 
     return f
 
 
-def g(x: np.ndarray):
+def mse(x: np.ndarray):
+    if x.ndim == 1:
+        x = x[None]
 
+    n_dims = x.shape[1]
+    return np.sqrt(np.divide(f(x),n_dims))
+
+
+def g(x: np.ndarray):
     """n-dimensional Ackley function definition. For the second test of the optimization algorithm. """
     if x.ndim == 1:
         x = x[None]
@@ -42,18 +49,32 @@ def rastrigin(x: np.ndarray):
 
     n_dims = x.shape[1]
 
-
     a = 10
     x_squared = np.square(x)
     x_sin = a * np.cos(2 * np.pi * x)
-    rastrigin = a * n_dims + np.sum(x_squared - x_sin, axis = 1)
+    rastrigin = a * n_dims + np.sum(x_squared - x_sin, axis=1)
 
     return rastrigin
 
+
 def rosenbrock(x: np.ndarray):
-    x_plus = x[:,1:]
-    x_i = x[:,0:-1]
+    x_plus = x[:, 1:]
+    x_i = x[:, 0:-1]
     aux_1 = 100 * np.square(x_plus - np.square(x_i))
     aux_2 = np.square(x_i - 1)
-    rosenbrock = np.sum(aux_1 + aux_2, axis = 1)
+    rosenbrock = np.sum(aux_1 + aux_2, axis=1)
     return rosenbrock
+
+def griewank(x:np.ndarray):
+
+    if x.ndim == 1:
+        x = x[None]
+
+    n_dims = x.shape[1]
+    dims = np.arange(1,n_dims+1)
+    x_squared = np.square(x)
+    aux = np.cos(np.divide(x,np.sqrt(dims)))
+    griewank = np.sum(x_squared, axis=1)/4000 - np.prod(aux, axis=1) + 1
+    
+    return griewank
+
