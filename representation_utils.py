@@ -12,27 +12,27 @@ from matplotlib.patches import Rectangle
 from matplotlib.patches import ConnectionPatch
 from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
 from mpl_toolkits.axes_grid1.inset_locator import mark_inset
-import latex
+# import latex
 # DATA IMPORT FROM NPZ FILES
 results_path = 'Results'
-optimization_results = np.load(os.path.join(results_path,'qea_testing_sigma_0001.npz'))
-Q_history = optimization_results['pos_history']
-cost_history = optimization_results['cost_h']
-history = optimization_results['time']
+# optimization_results = np.load(os.path.join(results_path,'qea_testing_sigma_0001.npz'))
+# Q_history = optimization_results['pos_history']
+# cost_history = optimization_results['cost_h']
+# history = optimization_results['time']
 
 optimization_results_2 = np.load(os.path.join(results_path,'testing_pso.npz'))
 cost_history_2 = optimization_results_2['cost_h']
 history_2 = optimization_results_2['time']
 
-optimization_results_3 = np.load(os.path.join(results_path,'qea_testingm.npz'))
-Q_history_3 = optimization_results_3['pos_history']
+optimization_results_3 = np.load(os.path.join(results_path,'testing_genetic_500.npz'))
+# Q_history_3 = optimization_results_3['pos_history']
 cost_history_3 = optimization_results_3['cost_h']
-history_3 = optimization_results_3['time']
+history_3 = optimization_results_3['eval']
 
-optimization_results_4 = np.load(os.path.join(results_path,'qea_testing0002.npz'))
-Q_history_4 = optimization_results_4['pos_history']
-cost_history_4 = optimization_results_4['cost_h']
-history_4 = optimization_results_4['time']
+# optimization_results_4 = np.load(os.path.join(results_path,'qea_testing0002.npz'))
+# Q_history_4 = optimization_results_4['pos_history']
+# cost_history_4 = optimization_results_4['cost_h']
+# history_4 = optimization_results_4['time']
 
 
 
@@ -60,7 +60,7 @@ fig = plt.figure(figsize=(8,5))
 
 ##############################################################################
 
-ax1 = plt.subplot(1,1, 1,xlim = [0, 1_000_000],xticks=[0, 500_000, 1_000_000],
+ax1 = plt.subplot(1,1, 1,xlim = [0, 3_000_000],xticks=[0, 500_000, 1_000_000],
     xticklabels=["0", "500K", "1M"] , ylim=[1e-4, 100])
 plt.yscale('log')
 ax1.plot(history_3[:,None], cost_history_3, label = 'N-QEA',color = "#CC5DE8")
