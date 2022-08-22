@@ -8,3 +8,4 @@ optimizer = QuantumEvAlgorithm(rastrigin, n_dims = 100,sigma_scaler = 1.0001,
 
 optimizer.training(N_iterations=4_000_000, sample_size= 10, save_results= True,filename='q10.npz')
 
+#Error aj
