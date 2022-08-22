@@ -47,8 +47,8 @@ fig = plt.figure(figsize=(8,4))
 # fig.suptitle(r'Logarithmic Convergence of the optimizer')
 
 
-ax = plt.subplot(1,3, 3,xlim = [0, 10_000_000],xticks=[0, 1_000_000, 2_000_000],
-    xticklabels=["0", "1M", "2M"] ,ylim=[1e-3, 100000])
+ax = plt.subplot(1,3, 3,xlim = [0, 4_000_000],xticks=[0, 1_000_000, 2_000_000],
+    xticklabels=["0", "1M", "2M"] ,ylim=[1e-30, 100000])
 plt.yscale('log')
 
 ax.plot(history[:,None], cost_history, label = 'N-QEA',color = "#CC5DE8")

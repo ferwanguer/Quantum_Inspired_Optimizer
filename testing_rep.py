@@ -15,7 +15,7 @@ from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 import latex
 # DATA IMPORT FROM NPZ FILES
 results_path = 'Results'
-optimization_results = np.load(os.path.join(results_path,'q1.npz'))
+optimization_results = np.load(os.path.join(results_path,'q10.npz'))
 Q_history = optimization_results['pos_history']
 cost_history = optimization_results['cost_h']
 history = optimization_results['time']
@@ -47,20 +47,20 @@ fig = plt.figure(figsize=(8,4))
 # fig.suptitle(r'Logarithmic Convergence of the optimizer')
 
 
-ax = plt.subplot(1,1, 1,xlim = [0, 10_000_000],xticks=[0, 1_000_000, 2_000_000],
-    xticklabels=["0", "1M", "2M"] ,ylim=[1e-3, 100000])
+ax = plt.subplot(1,1, 1,xlim = [0, 20000_000],xticks=[0, 1_000_000, 2_000_000, 3_000_000],
+    xticklabels=["0", "1M", "2M", "3M"] ,ylim=[1e-1, 100000])
 plt.yscale('log')
 
 ax.plot(history[:,None], cost_history, label = 'N-QEA',color = "#CC5DE8")
 # ax.plot(history_2, cost_history_2, label ='PSO', color = "#82C91E")
 # ax.plot(history_5, cost_history_5, label ='Genetic', color = "#FF7043")
-# ax.set_ylabel("Logarithmic cost", ha="center", weight="bold")
+ax.set_ylabel("Log", ha="center", weight="bold")
 ax.set_xlabel("Function evaluations", va="top")
-ax.set_title("(c)")
+ax.set_title("$F_2^{10000}$ optimization")
 ax.grid(True, "minor", color="0.85", linewidth=0.50, zorder=-20)
 ax.grid(True, "major", color="0.65", linewidth=0.85, zorder=-10)
 # ax.tick_params(which="both", labelleft=False, left=False)
-ax.text(500_000, 1e-14, "$\\rho_\sigma =1.0001 $", color="#CC5DE8", zorder = -30)
+# ax.text(500_000, 1e-14, "$\\rho_\sigma =1.0001 $", color="#CC5DE8", zorder = -30)
 ax.legend(edgecolor="None")
 
 plt.show()
