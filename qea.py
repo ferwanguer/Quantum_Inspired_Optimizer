@@ -15,7 +15,7 @@ class QuantumEvAlgorithm:
         self.cost_function = f
         self.n_dims = n_dims
         self.sigma_scaler = sigma_scaler
-        self.mu_scaler = mu_scalers
+        self.mu_scaler = mu_scaler
         self.elitist_level = elitist_level
         self.ros_flag = ros_flag
         self.error = error_ev
