@@ -8,14 +8,14 @@ class QuantumEvAlgorithm:
     optimization algorithm. For a thorough description of the algorithm please visit:
     URL. FWG"""
 
-    def __init__(self, f, n_dims, sigma_scaler=1.00001, mu_scaler=100, elitist_level=2,error_ev = mse ,ros_flag = False, saving_interval = 10):
+    def __init__(self, f, n_dims, sigma_scaler=1.00001, mu_scaler=100, elitist_level=2,error_ev = mse ,ros_flag = False, saving_interval = 100):
         """The QuantumEvAlgorithm class admits a (scalar) function to be optimized. The function
         must be able to generate multiple outputs for multiple inputs of shape (n_samples,n_dimensions).
         The n_dims attribute is to be placed as an input of the class"""
         self.cost_function = f
         self.n_dims = n_dims
         self.sigma_scaler = sigma_scaler
-        self.mu_scaler = mu_scaler
+        self.mu_scaler = mu_scalers
         self.elitist_level = elitist_level
         self.ros_flag = ros_flag
         self.error = error_ev
@@ -52,7 +52,7 @@ class QuantumEvAlgorithm:
 
     def elitist_sample_evaluation(self, samples):
         """This function is analog to the previous one. Instead of choosing the best, it computes the mean of the
-        10 best samples."""
+        0 best samples."""
         cost = self.cost_function(samples)
         sort_order = np.argsort(cost, axis=0)
         elitist_level = self.elitist_level
@@ -62,7 +62,7 @@ class QuantumEvAlgorithm:
 
     def pondered_elitist_sample_evaluation(self, samples):
         """This function is analog to the previous one. Instead of choosing the best, it computes the mean of the
-        10 best samples. It may be pending to orient it as a maximization problem. Still yet to decide"""
+        0 best samples. It may be pending to orient it as a maximization problem. Still yet to decide"""
         cost = self.cost_function(samples)
         sort_order = np.argsort(cost, axis=0)
         elitist_level = self.elitist_level
@@ -152,7 +152,7 @@ class QuantumEvAlgorithm:
                 j += 1
                 
 
-            if np.mod(i, 5) == 0:
+            if np.mod(i, 100) == 0:
                 #print(f'Progress {100*i/N_iterations:.2f}%, Best cost = {output}')
                 self.progress(i,N_iterations,f'Best cost = {self.cost_function(best_performer)}, RMSE = {self.error(best_performer)}')
 
