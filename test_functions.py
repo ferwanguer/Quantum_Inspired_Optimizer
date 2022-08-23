@@ -58,6 +58,9 @@ def rastrigin(x: np.ndarray):
 
 
 def rosenbrock(x: np.ndarray):
+    if x.ndim == 1:
+        x = x[None]
+
     x_plus = x[:, 1:]
     x_i = x[:, 0:-1]
     aux_1 = 100 * np.square(x_plus - np.square(x_i))

@@ -6,14 +6,14 @@ import os
 #Testing the activity commit
 start = time.time()
 options = {'c1': 0.5, 'c2': 0.3, 'w':0.9}
-n_dimensions = 10
-x_max = 5.12 * np.ones(n_dimensions)
+n_dimensions = 1000
+x_max = 600 * np.ones(n_dimensions)
 x_min = - x_max
 bounds = (x_min, x_max)
 iterations = 1000
-n_particles = 300
+n_particles = 5000
 optimizer = GlobalBestPSO(n_particles= n_particles, dimensions = n_dimensions,options = options, bounds= bounds)
-optimizer.optimize(rastrigin,iters = iterations)
+optimizer.optimize(rosenbrock,iters = iterations)
 
 cost_history = optimizer.cost_history
 position_history = optimizer.pos_history[0]

@@ -99,8 +99,8 @@ class QuantumEvAlgorithm:
         sigma_scaler = self.sigma_scaler
 
         updated_sigma = (sigma_decider < 1) * sigma / sigma_scaler + (sigma_decider > 1) * sigma * sigma_scaler
-        if self.cost_function(updated_mu)>10e-2 and self.ros_flag:
-            condition = (updated_sigma < 0.05) * (sigma_decider < 1)
+        if self.cost_function(updated_mu)>10 and self.ros_flag:
+            condition = (updated_sigma < 0.001) * (sigma_decider < 1)
             updated_sigma[condition] = updated_sigma[condition] * sigma_scaler
 
 
