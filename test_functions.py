@@ -5,10 +5,10 @@ import numpy as np
 
 def f(x: np.ndarray):
     """n-dimensional paraboloid definition. For the first test of the optimization algorithm."""
-    if x.ndim == 1:
-        x = x[None]
+    # if x.ndim == 1:
+    #     x = x[None]
 
-    n_dims = x.shape[1]
+    n_dims = len(x)#x.shape[1]
 
     min_value = 0.0 * np.ones((1, n_dims))
     f = np.sum(np.square(x - min_value), axis=1)
