@@ -1,4 +1,4 @@
-from test_functions import f, g, rastrigin, rosenbrock
+from test_functions import f, g, rastrigin, rosenbrock, michael, schwefel
 from pyswarms.single import GlobalBestPSO
 import numpy as np
 import time
@@ -6,14 +6,14 @@ import os
 #Testing the activity commit
 start = time.time()
 options = {'c1': 0.5, 'c2': 0.3, 'w':0.9}
-n_dimensions = 1000
-x_max = 600 * np.ones(n_dimensions)
-x_min = - x_max
+n_dimensions = 2
+x_max = np.pi * np.ones(n_dimensions)
+x_min = 0* np.ones(n_dimensions)
 bounds = (x_min, x_max)
-iterations = 1000
-n_particles = 5000
+iterations = 100
+n_particles = 30
 optimizer = GlobalBestPSO(n_particles= n_particles, dimensions = n_dimensions,options = options, bounds= bounds)
-optimizer.optimize(rosenbrock,iters = iterations)
+optimizer.optimize(michael,iters = iterations)
 
 cost_history = optimizer.cost_history
 position_history = optimizer.pos_history[0]

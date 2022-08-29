@@ -81,3 +81,22 @@ def griewank(x:np.ndarray):
     
     return griewank
 
+def michael(x:np.ndarray):
+    if x.ndim == 1:
+        x = x[None]  
+
+    m = 10
+    n_dims = x.shape[1]
+    x_squared = np.square(x)
+    dims = np.arange(1,n_dims+1)
+    aux = np.sin(dims*x_squared/np.pi)**(2*m)
+    return -np.sum( np.sin(x) * aux, axis = 1)
+
+def schwefel(x:np.ndarray):
+    if x.ndim == 1:
+        x = x[None]
+    n_dims = x.shape[1]
+    a = 418.9829*n_dims
+
+    return a - np.sum( x*np.sin(np.sqrt(np.abs(x))), axis = 1)
+
