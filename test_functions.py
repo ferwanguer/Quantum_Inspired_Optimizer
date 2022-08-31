@@ -5,10 +5,10 @@ import numpy as np
 
 def f(x: np.ndarray):
     """n-dimensional paraboloid definition. For the first test of the optimization algorithm."""
-    if x.ndim == 1:
-        x = x[None]
+    # if x.ndim == 1:
+    #     x = x[None]
 
-    n_dims = x.shape[1]
+    n_dims = len(x)#x.shape[1]
 
     min_value = 0.0 * np.ones((1, n_dims))
     f = np.sum(np.square(x - min_value), axis=1)
@@ -58,6 +58,9 @@ def rastrigin(x: np.ndarray):
 
 
 def rosenbrock(x: np.ndarray):
+    if x.ndim == 1:
+        x = x[None]
+
     x_plus = x[:, 1:]
     x_i = x[:, 0:-1]
     aux_1 = 100 * np.square(x_plus - np.square(x_i))
@@ -77,4 +80,23 @@ def griewank(x:np.ndarray):
     griewank = np.sum(x_squared, axis=1)/4000 - np.prod(aux, axis=1) + 1
     
     return griewank
+
+def michael(x:np.ndarray):
+    if x.ndim == 1:
+        x = x[None]  
+
+    m = 10
+    n_dims = x.shape[1]
+    x_squared = np.square(x)
+    dims = np.arange(1,n_dims+1)
+    aux = np.sin(dims*x_squared/np.pi)**(2*m)
+    return -np.sum( np.sin(x) * aux, axis = 1)
+
+def schwefel(x:np.ndarray):
+    if x.ndim == 1:
+        x = x[None]
+    n_dims = x.shape[1]
+    a = 418.9829*n_dims
+
+    return a - np.sum( x*np.sin(np.sqrt(np.abs(x))), axis = 1)
 

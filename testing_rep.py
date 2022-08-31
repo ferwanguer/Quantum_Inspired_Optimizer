@@ -15,40 +15,19 @@ from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 import latex
 # DATA IMPORT FROM NPZ FILES
 results_path = 'Results'
-optimization_results = np.load(os.path.join(results_path,'q10.npz'))
+optimization_results = np.load(os.path.join(results_path,'Ackley__big_2.npz'))
 Q_history = optimization_results['pos_history']
 cost_history = optimization_results['cost_h']
 history = optimization_results['time']
-#
-# optimization_results_2 = np.load(os.path.join(results_path,'testing_pso.npz'))
-# cost_history_2 = optimization_results_2['cost_h']
-# history_2 = optimization_results_2['time']
-#
-# optimization_results_3 = np.load(os.path.join(results_path,'qea_testing.npz'))
-# Q_history_3 = optimization_results_3['pos_history']
-# cost_history_3 = optimization_results_3['cost_h']
-# history_3 = optimization_results_3['time']
-#
-# optimization_results_4 = np.load(os.path.join(results_path,'qea_testing0002.npz'))
-# Q_history_4 = optimization_results_4['pos_history']
-# cost_history_4 = optimization_results_4['cost_h']
-# history_4 = optimization_results_4['time']
-#
-# optimization_results_5 = np.load(os.path.join(results_path,'testing_genetic_500.npz'))
-# # Q_history_5 = optimization_results_5['pos_history']
-# cost_history_5 = optimization_results_5['cost_h']
-# history_5 = optimization_results_5['eval']
 
-#
-#
 #FIRST FIGURE -> LOGARITHMIC COST EVOLUTION WRT TIME(SECONDS)
 
 fig = plt.figure(figsize=(8,4))
 # fig.suptitle(r'Logarithmic Convergence of the optimizer')
 
 
-ax = plt.subplot(1,1, 1,xlim = [0, 20000_000],xticks=[0, 1_000_000, 2_000_000, 3_000_000],
-    xticklabels=["0", "1M", "2M", "3M"] ,ylim=[1e-1, 100000])
+ax = plt.subplot(1,1, 1,xlim = [0, 100_000_000],xticks=[0, 5_000_000, 10_000_000, 35_000_000],
+    xticklabels=["0", "5M", "10M", "12M"] ,ylim=[1e-7, 1e7])
 plt.yscale('log')
 
 ax.plot(history[:,None], cost_history, label = 'N-QEA',color = "#CC5DE8")
@@ -56,7 +35,7 @@ ax.plot(history[:,None], cost_history, label = 'N-QEA',color = "#CC5DE8")
 # ax.plot(history_5, cost_history_5, label ='Genetic', color = "#FF7043")
 ax.set_ylabel("Log", ha="center", weight="bold")
 ax.set_xlabel("Function evaluations", va="top")
-ax.set_title("$F_2^{10000}$ optimization")
+ax.set_title("$F_2^{100000}$ optimization")
 ax.grid(True, "minor", color="0.85", linewidth=0.50, zorder=-20)
 ax.grid(True, "major", color="0.65", linewidth=0.85, zorder=-10)
 # ax.tick_params(which="both", labelleft=False, left=False)

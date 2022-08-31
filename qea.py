@@ -32,8 +32,8 @@ class QuantumEvAlgorithm:
         # Second row: std deviation (sigma)
 
         # np.random.seed(4)
-        Q = -5 + 5 * np.random.rand(2, self.n_dims)
-        Q[1, :] = 5* np.ones(self.n_dims)
+        Q = -0+ 5 * np.random.rand(2, self.n_dims)
+        Q[1, :] = np.pi* np.ones(self.n_dims)
 
         self.best_of_best = Q[0:1, :]  # Initial definition of best_of_best
         # print(Q)
@@ -42,7 +42,7 @@ class QuantumEvAlgorithm:
     def quantum_sampling(self, Q, n_samples):
         """This method generates n_samples from Q (each sample feature is generated with its correspondent
         mu_i and sigma_i)"""
-        samples = np.minimum(np.maximum(np.random.normal(Q[0, :], Q[1, :], size=(n_samples, self.n_dims)),-5),+5)
+        samples = np.minimum(np.maximum(np.random.normal(Q[0, :], Q[1, :], size=(n_samples, self.n_dims)),0),np.pi)
 
         # print(f'samples shape = {samples.shape}')
         # print(f'mu shape {Q[0:1,:].shape}')
@@ -99,8 +99,8 @@ class QuantumEvAlgorithm:
         sigma_scaler = self.sigma_scaler
 
         updated_sigma = (sigma_decider < 1) * sigma / sigma_scaler + (sigma_decider > 1) * sigma * sigma_scaler
-        if self.cost_function(updated_mu)>10e-2 and self.ros_flag:
-            condition = (updated_sigma < 0.05) * (sigma_decider < 1)
+        if self.cost_function(updated_mu)>10 and self.ros_flag:
+            condition = (updated_sigma < 0.001) * (sigma_decider < 1)
             updated_sigma[condition] = updated_sigma[condition] * sigma_scaler
 
 
@@ -152,7 +152,7 @@ class QuantumEvAlgorithm:
                 j += 1
                 
 
-            if np.mod(i, 100) == 0:
+            if np.mod(i, 500) == 0:
                 #print(f'Progress {100*i/N_iterations:.2f}%, Best cost = {output}')
                 self.progress(i,N_iterations,f'Best cost = {self.cost_function(best_performer)}, RMSE = {self.error(best_performer)}')
 
@@ -164,7 +164,7 @@ class QuantumEvAlgorithm:
         print(f' \n \n The algorithm took {end - beginning} seconds \n \n ')
         #print(f' min is  = {self.cost_function(best_performer)}')
 
-        #print(f'The min is IN = {best_performer} \n \n ')
+        print(f'The min is IN = {best_performer} \n \n ')
 
         results_path = 'Results'
         if save_results:
