@@ -8,3 +8,4 @@ varbound=np.array([[-5.12,5.12]]*100)
 model=ga(function=f,dimension=100,variable_type='real',variable_boundaries=varbound)
 
 model.run()
+#odio los algoritmos de optimizagión
