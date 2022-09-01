@@ -8,4 +8,4 @@ varbound=np.array([[0,np.pi]]*2)
 model=ga(function=michael,dimension=2,variable_type='real',variable_boundaries=varbound)
 
 model.run()
-#odio los algoritmos de optimizagión
+# Ok 
