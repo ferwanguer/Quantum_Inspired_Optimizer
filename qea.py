@@ -32,8 +32,8 @@ class QuantumEvAlgorithm:
         # Second row: std deviation (sigma)
 
         # np.random.seed(4)
-        Q = -0+ 5 * np.random.rand(2, self.n_dims)
-        Q[1, :] = np.pi* np.ones(self.n_dims)
+        Q = -5+ 5 * np.random.rand(2, self.n_dims)
+        Q[1, :] = 5* np.ones(self.n_dims)
 
         self.best_of_best = Q[0:1, :]  # Initial definition of best_of_best
         # print(Q)
