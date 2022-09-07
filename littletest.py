@@ -1,5 +1,6 @@
 import sys
 import time
+#This test was succesfull
 def progress(count, total, status='Processing'):
     bar_len = 50
     filled_len = int(round(bar_len * count / float(total)))

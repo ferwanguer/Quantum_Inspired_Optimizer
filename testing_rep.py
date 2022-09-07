@@ -13,6 +13,7 @@ from matplotlib.patches import ConnectionPatch
 from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
 from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 import latex
+#I am loosing traceability of what is this.
 # DATA IMPORT FROM NPZ FILES
 results_path = 'Results'
 optimization_results = np.load(os.path.join(results_path,'Ackley__big_2.npz'))
