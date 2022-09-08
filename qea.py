@@ -8,7 +8,7 @@ class QuantumEvAlgorithm:
     optimization algorithm. For a thorough description of the algorithm please visit:
     URL. FWG"""
 
-    def __init__(self, f, n_dims, sigma_scaler=1.00001, mu_scaler=100, elitist_level=2,error_ev = mse ,ros_flag = False, saving_interval = 100):
+    def __init__(self, f, n_dims, sigma_scaler=1.00001, mu_scaler=100, elitist_level=2,error_ev = mse ,ros_flag = False, saving_interval = 10):
         """The QuantumEvAlgorithm class admits a (scalar) function to be optimized. The function
         must be able to generate multiple outputs for multiple inputs of shape (n_samples,n_dimensions).
         The n_dims attribute is to be placed as an input of the class"""
@@ -32,8 +32,8 @@ class QuantumEvAlgorithm:
         # Second row: std deviation (sigma)
 
         # np.random.seed(4)
-        Q = -5+ 5 * np.random.rand(2, self.n_dims)
-        Q[1, :] = 5* np.ones(self.n_dims)
+        Q = -10+ 10 * np.random.rand(2, self.n_dims)
+        Q[1, :] = 10 * np.ones(self.n_dims)
 
         self.best_of_best = Q[0:1, :]  # Initial definition of best_of_best
         # print(Q)
@@ -42,7 +42,7 @@ class QuantumEvAlgorithm:
     def quantum_sampling(self, Q, n_samples):
         """This method generates n_samples from Q (each sample feature is generated with its correspondent
         mu_i and sigma_i)"""
-        samples = np.minimum(np.maximum(np.random.normal(Q[0, :], Q[1, :], size=(n_samples, self.n_dims)),0),np.pi)
+        samples = np.minimum(np.maximum(np.random.normal(Q[0, :], Q[1, :], size=(n_samples, self.n_dims)),-10),10)
 
         # print(f'samples shape = {samples.shape}')
         # print(f'mu shape {Q[0:1,:].shape}')
@@ -156,6 +156,9 @@ class QuantumEvAlgorithm:
                 #print(f'Progress {100*i/N_iterations:.2f}%, Best cost = {output}')
                 self.progress(i,N_iterations,f'Best cost = {self.cost_function(best_performer)}, RMSE = {self.error(best_performer)}')
 
+            if self.cost_function(best_performer) <= 0.0001:
+                print(f'\n\n|| Min detected, value = {self.cost_function(best_performer)}||')
+                break
 
         end = time.time()
 

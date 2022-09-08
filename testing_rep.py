@@ -27,7 +27,7 @@ fig = plt.figure(figsize=(8,4))
 # fig.suptitle(r'Logarithmic Convergence of the optimizer')
 
 
-ax = plt.subplot(1,1, 1,xlim = [0, 20_000],xticks=[0, 20000],
+ax = plt.subplot(1,1, 1,xlim = [0, 20_00000],xticks=[0, 20000],
    ylim=[1e-20, 10])
 plt.yscale('log')
 

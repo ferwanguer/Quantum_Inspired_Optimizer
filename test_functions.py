@@ -106,3 +106,13 @@ def dropwave(x:np.ndarray):
     num = -1 - np.cos(12*np.sqrt(np.sum(np.square(x), axis = 1)))
     den = 2 + 0.5*(np.sum(np.square(x), axis = 1))
     return(num/den)
+
+def schaffer_2(x:np.ndarray):
+    if x.ndim == 1:
+        x = x[None] 
+    x_1 = x[0,0]
+    x_2 = x[0,1]
+
+    num = np.sin(x_1**2 - x_2**2)**2 - 0.5
+    den = (1+0.001*(x_1**2 + x_2**2))**2
+    return 0.5 + num/den
