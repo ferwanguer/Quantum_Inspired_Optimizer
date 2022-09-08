@@ -1,4 +1,4 @@
-from test_functions import f, g, rastrigin, rosenbrock, michael, schwefel
+from test_functions import f, g, rastrigin, rosenbrock, michael, schwefel, dropwave
 from pyswarms.single import GlobalBestPSO
 import numpy as np
 import time
@@ -10,10 +10,10 @@ n_dimensions = 2
 x_max = np.pi * np.ones(n_dimensions)
 x_min = 0* np.ones(n_dimensions)
 bounds = (x_min, x_max)
-iterations = 100
-n_particles = 30
+iterations = 500
+n_particles = 300
 optimizer = GlobalBestPSO(n_particles= n_particles, dimensions = n_dimensions,options = options, bounds= bounds)
-optimizer.optimize(michael,iters = iterations)
+optimizer.optimize(dropwave,iters = iterations)
 
 cost_history = optimizer.cost_history
 position_history = optimizer.pos_history[0]

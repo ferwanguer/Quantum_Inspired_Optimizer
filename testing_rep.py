@@ -16,7 +16,7 @@ import latex
 #I am loosing traceability of what is this.
 # DATA IMPORT FROM NPZ FILES
 results_path = 'Results'
-optimization_results = np.load(os.path.join(results_path,'Ackley__big_2.npz'))
+optimization_results = np.load(os.path.join(results_path,'q11.npz'))
 Q_history = optimization_results['pos_history']
 cost_history = optimization_results['cost_h']
 history = optimization_results['time']
@@ -27,8 +27,8 @@ fig = plt.figure(figsize=(8,4))
 # fig.suptitle(r'Logarithmic Convergence of the optimizer')
 
 
-ax = plt.subplot(1,1, 1,xlim = [0, 100_000_000],xticks=[0, 5_000_000, 10_000_000, 35_000_000],
-    xticklabels=["0", "5M", "10M", "12M"] ,ylim=[1e-7, 1e7])
+ax = plt.subplot(1,1, 1,xlim = [0, 20_000],xticks=[0, 20000],
+   ylim=[1e-20, 10])
 plt.yscale('log')
 
 ax.plot(history[:,None], cost_history, label = 'N-QEA',color = "#CC5DE8")

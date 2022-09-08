@@ -100,3 +100,9 @@ def schwefel(x:np.ndarray):
 
     return a - np.sum( x*np.sin(np.sqrt(np.abs(x))), axis = 1)
 
+def dropwave(x:np.ndarray):
+    if x.ndim == 1:
+        x = x[None]   
+    num = -1 - np.cos(12*np.sqrt(np.sum(np.square(x), axis = 1)))
+    den = 2 + 0.5*(np.sum(np.square(x), axis = 1))
+    return(num/den)
