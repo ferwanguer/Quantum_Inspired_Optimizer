@@ -5,7 +5,7 @@ from matplotlib.pyplot import cm
 import os
 import matplotlib
 from matplotlib import rcParams
-# rcParams['font.family'] = 'sans-serif'
+
 rcParams['font.sans-serif'] = ['Arial']
 from matplotlib.gridspec import GridSpec
 from matplotlib.patches import Rectangle
@@ -24,7 +24,7 @@ history = optimization_results['time']
 #FIRST FIGURE -> LOGARITHMIC COST EVOLUTION WRT TIME(SECONDS)
 
 fig = plt.figure(figsize=(8,4))
-# fig.suptitle(r'Logarithmic Convergence of the optimizer')
+
 
 
 ax = plt.subplot(1,1, 1,xlim = [0, 20_00000],xticks=[0, 20000],

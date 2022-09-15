@@ -176,5 +176,5 @@ class QuantumEvAlgorithm:
                     cost_h = best_performer_marker,
                     pos_history = Q_history, time=function_evaluations)
 
-        print('End of training')
+     
 

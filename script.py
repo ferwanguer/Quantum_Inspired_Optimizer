@@ -11,5 +11,3 @@ optimizer.training(N_iterations=100_000, sample_size= 150, save_results= True,fi
 
 
 
-
-#Ojala...
