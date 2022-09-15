@@ -21,7 +21,6 @@ position_history = optimizer.pos_history[0]
 end = time.time()
 function_evaluations = iterations*n_particles
 
-# optimization_time = np.linspace(0, end - start, num= len(cost_history))
 
 optimization_time = np.linspace(0, function_evaluations, num= len(cost_history))
 print(f'The PSO algorithm took {end-start} seconds')
