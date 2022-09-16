@@ -1,7 +1,9 @@
 import numpy as np
 
 """This script defines the functions that are to be optimized"""
-#x = np.zeros(4)
+
+
+# x = np.zeros(4)
 
 def f(x: np.ndarray):
     """n-dimensional paraboloid definition. For the first test of the optimization algorithm."""
@@ -21,7 +23,7 @@ def mse(x: np.ndarray):
         x = x[None]
 
     n_dims = x.shape[1]
-    return np.sqrt(np.divide(f(x),n_dims))
+    return np.sqrt(np.divide(f(x), n_dims))
 
 
 def g(x: np.ndarray):
@@ -68,51 +70,69 @@ def rosenbrock(x: np.ndarray):
     rosenbrock = np.sum(aux_1 + aux_2, axis=1)
     return rosenbrock
 
-def griewank(x:np.ndarray):
 
+def griewank(x: np.ndarray):
     if x.ndim == 1:
         x = x[None]
 
     n_dims = x.shape[1]
-    dims = np.arange(1,n_dims+1)
+    dims = np.arange(1, n_dims + 1)
     x_squared = np.square(x)
-    aux = np.cos(np.divide(x,np.sqrt(dims)))
-    griewank = np.sum(x_squared, axis=1)/4000 - np.prod(aux, axis=1) + 1
-    
+    aux = np.cos(np.divide(x, np.sqrt(dims)))
+    griewank = np.sum(x_squared, axis=1) / 4000 - np.prod(aux, axis=1) + 1
+
     return griewank
 
-def michael(x:np.ndarray):
+
+def michael(x: np.ndarray):
     if x.ndim == 1:
-        x = x[None]  
+        x = x[None]
 
     m = 10
     n_dims = x.shape[1]
     x_squared = np.square(x)
-    dims = np.arange(1,n_dims+1)
-    aux = np.sin(dims*x_squared/np.pi)**(2*m)
-    return -np.sum( np.sin(x) * aux, axis = 1)
+    dims = np.arange(1, n_dims + 1)
+    aux = np.sin(dims * x_squared / np.pi) ** (2 * m)
+    return -np.sum(np.sin(x) * aux, axis=1)
 
-def schwefel(x:np.ndarray):
+
+def schwefel(x: np.ndarray):
     if x.ndim == 1:
         x = x[None]
     n_dims = x.shape[1]
-    a = 418.9829*n_dims
+    a = 418.9829 * n_dims
 
-    return a - np.sum( x*np.sin(np.sqrt(np.abs(x))), axis = 1)
+    return a - np.sum(x * np.sin(np.sqrt(np.abs(x))), axis=1)
 
-def dropwave(x:np.ndarray):
+
+def dropwave(x: np.ndarray):
     if x.ndim == 1:
-        x = x[None]   
-    num = -1 - np.cos(12*np.sqrt(np.sum(np.square(x), axis = 1)))
-    den = 2 + 0.5*(np.sum(np.square(x), axis = 1))
-    return(num/den)
+        x = x[None]
+    num = -1 - np.cos(12 * np.sqrt(np.sum(np.square(x), axis=1)))
+    den = 2 + 0.5 * (np.sum(np.square(x), axis=1))
+    return (num / den)
 
-def schaffer_2(x:np.ndarray):
+
+def schaffer_2(x: np.ndarray):
     if x.ndim == 1:
-        x = x[None] 
-    x_1 = x[0,0]
-    x_2 = x[0,1]
+        x = x[None]
+    x_1 = x[0, 0]
+    x_2 = x[0, 1]
 
-    num = np.sin(x_1**2 - x_2**2)**2 - 0.5
-    den = (1+0.001*(x_1**2 + x_2**2))**2
-    return 0.5 + num/den
+    num = np.sin(x_1 ** 2 - x_2 ** 2) ** 2 - 0.5
+    den = (1 + 0.001 * (x_1 ** 2 + x_2 ** 2)) ** 2
+    return 0.5 + num / den
+
+
+A = np.random.rand(20, 20)
+b = np.random.rand(20, 1)
+
+
+def equation(x):
+    if x.ndim == 1:
+        x = x[None]
+
+    return np.sum(np.square((np.matmul(A, x.T) - b)))
+
+solution = np.linalg.solve(A,b)
+print(solution)

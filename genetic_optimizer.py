@@ -1,5 +1,5 @@
 import numpy as np
-from test_functions import f, g, michael, rastrigin, rosenbrock, schwefel, dropwave
+from ttest_functions import f, g, michael, rastrigin, rosenbrock, schwefel, dropwave
 from geneticalgorithm import geneticalgorithm as ga
 
 varbound=np.array([[-5,5]]*2)

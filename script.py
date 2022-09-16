@@ -1,12 +1,12 @@
 
 from qea import QuantumEvAlgorithm
-from test_functions import f,g,rastrigin,rosenbrock, griewank, michael, schwefel, dropwave, schaffer_2
+from ttest_functions import f,g,rastrigin,rosenbrock, griewank, michael, schwefel, dropwave, schaffer_2, equation
 
 
-optimizer = QuantumEvAlgorithm(schaffer_2, n_dims = 2,sigma_scaler = 1.0001,
-                                   mu_scaler = 1, elitist_level = 1, ros_flag= False, saving_interval=5)
+optimizer = QuantumEvAlgorithm(equation, n_dims = 20,sigma_scaler = 1.0009,
+                                   mu_scaler = 20, elitist_level = 15, ros_flag= False, saving_interval=500)
 
-optimizer.training(N_iterations=100_000, sample_size= 150, save_results= True,filename='q11.npz')
+optimizer.training(N_iterations=150000, sample_size= 150, save_results= True,filename='q11.npz')
 
 
 

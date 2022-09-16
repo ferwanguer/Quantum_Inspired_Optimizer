@@ -2,7 +2,7 @@ import numpy as np
 import time
 import os
 import sys
-from test_functions import mse,f
+from ttest_functions import mse,f
 class QuantumEvAlgorithm:
     """This object encapsules the necessary methods to make a Quantum-Inspired
     optimization algorithm. For a thorough description of the algorithm please visit:
@@ -20,6 +20,7 @@ class QuantumEvAlgorithm:
         self.ros_flag = ros_flag
         self.error = error_ev
         self.saving_interval = saving_interval
+
     def quantum_individual_init(self):
         """Creates a Quantum individual of n_dims features. For each feature mu and sigma are created
          (normal distribution).
@@ -32,8 +33,8 @@ class QuantumEvAlgorithm:
         # Second row: std deviation (sigma)
 
         # np.random.seed(4)
-        Q = -10+ 10 * np.random.rand(2, self.n_dims)
-        Q[1, :] = 10 * np.ones(self.n_dims)
+        Q = -3 + 3 * np.random.rand(2, self.n_dims)
+        Q[1, :] =  3 * np.ones(self.n_dims)
 
         self.best_of_best = Q[0:1, :]  # Initial definition of best_of_best
         # print(Q)
@@ -42,7 +43,7 @@ class QuantumEvAlgorithm:
     def quantum_sampling(self, Q, n_samples):
         """This method generates n_samples from Q (each sample feature is generated with its correspondent
         mu_i and sigma_i)"""
-        samples = np.minimum(np.maximum(np.random.normal(Q[0, :], Q[1, :], size=(n_samples, self.n_dims)),-10),10)
+        samples = np.minimum(np.maximum(np.random.normal(Q[0, :], Q[1, :], size=(n_samples, self.n_dims)),-3),3)
 
         # print(f'samples shape = {samples.shape}')
         # print(f'mu shape {Q[0:1,:].shape}')
@@ -91,8 +92,9 @@ class QuantumEvAlgorithm:
 
         scaling = self.mu_scaler
         mu_delta = best_performing_sample - mu
+        mu_delta_2 = self.best_of_best - mu
 
-        updated_mu = mu + mu_delta / scaling
+        updated_mu = mu + (mu_delta + mu_delta_2) / scaling
 
         sigma_decider = np.abs(mu_delta) / sigma
         #print(sigma_decider)
@@ -142,6 +144,9 @@ class QuantumEvAlgorithm:
 
             samples = self.quantum_sampling(Q, sample_size)
             best_performer = self.elitist_sample_evaluation(samples)
+            if self.cost_function(best_performer) < self.cost_function(self.best_of_best):
+                self.best_of_best = best_performer
+
             Q = self.quantum_update(Q, best_performer)
 
             if np.mod(i, self.saving_interval) == 0:
@@ -152,11 +157,11 @@ class QuantumEvAlgorithm:
                 j += 1
                 
 
-            if np.mod(i, 500) == 0:
+            if np.mod(i, 50) == 0:
                 #print(f'Progress {100*i/N_iterations:.2f}%, Best cost = {output}')
                 self.progress(i,N_iterations,f'Best cost = {self.cost_function(best_performer)}, RMSE = {self.error(best_performer)}')
 
-            if self.cost_function(best_performer) <= 0.0001:
+            if self.cost_function(best_performer) <= 0.0001 and False:
                 print(f'\n\n|| Min detected, value = {self.cost_function(best_performer)}||')
                 break
 

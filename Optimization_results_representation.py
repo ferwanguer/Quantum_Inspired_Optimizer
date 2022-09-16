@@ -162,7 +162,7 @@ plt.show()
 #Explanation part to paint.
 
 #Step 1: Paint rastrigin function
-from test_functions import rastrigin
+from ttest_functions import rastrigin
 
 #
 # def objective(X, Y):

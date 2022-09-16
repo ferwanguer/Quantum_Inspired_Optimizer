@@ -27,9 +27,9 @@ fig = plt.figure(figsize=(8,4))
 
 
 
-ax = plt.subplot(1,1, 1,xlim = [0, 20_00000],xticks=[0, 20000],
+ax = plt.subplot(1,1, 1,xlim = [0, 15_000_000],xticks=[0, 20000],
    ylim=[1e-20, 10])
-plt.yscale('log')
+# plt.yscale('log')
 
 ax.plot(history[:,None], cost_history, label = 'N-QEA',color = "#CC5DE8")
 # ax.plot(history_2, cost_history_2, label ='PSO', color = "#82C91E")
