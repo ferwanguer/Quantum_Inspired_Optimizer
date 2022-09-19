@@ -8,4 +8,3 @@ varbound=np.array([[-5,5]]*2)
 model=ga(function=dropwave,dimension=2,variable_type='real',variable_boundaries=varbound)
 
 model.run()
-#odio los algoritmos de optimizagión con toda mi ser
