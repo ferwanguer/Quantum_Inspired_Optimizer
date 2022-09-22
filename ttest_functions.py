@@ -12,7 +12,7 @@ def f(x: np.ndarray):
 
     n_dims = x.shape[1]
 
-    min_value = 0.0 * np.ones((1, n_dims))
+    min_value = 3.8 * np.ones((1, n_dims))
     f = np.sum(np.square(x - min_value), axis=1)
 
     return f
@@ -134,5 +134,5 @@ def equation(x):
 
     return np.sum(np.square((np.matmul(A, x.T) - b)))
 
-solution = np.linalg.solve(A,b)
-print(solution)
+# solution = np.linalg.solve(A,b)
+# print(solution)
