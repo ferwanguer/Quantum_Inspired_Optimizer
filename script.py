@@ -11,3 +11,4 @@ optimizer.training(N_iterations=200, sample_size= 10, save_results= True,filenam
 
 
 
+#Todo en orden
