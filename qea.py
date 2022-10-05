@@ -8,7 +8,8 @@ class QuantumEvAlgorithm:
     optimization algorithm. For a thorough description of the algorithm please visit:
     URL. FWG"""
 
-    def __init__(self, f, n_dims, upper_bound, lower_bound, sigma_scaler=1.00001, mu_scaler=100, elitist_level=2,error_ev = mse ,ros_flag = False, saving_interval = 10):
+    def __init__(self, f, n_dims, upper_bound, lower_bound, sigma_scaler=1.00001, mu_scaler=100, elitist_level=2,error_ev = mse ,ros_flag = False, saving_interval = 10, 
+    integral_id = np.full(n_dims, False)):
         """The QuantumEvAlgorithm class admits a (scalar) function to be optimized. The function
         must be able to generate multiple outputs for multiple inputs of shape (n_samples,n_dimensions).
         The n_dims attribute is to be placed as an input of the class"""
@@ -22,7 +23,12 @@ class QuantumEvAlgorithm:
         self.saving_interval = saving_interval
         self.upper = upper_bound
         self.lower = lower_bound
+        self.integral_id = integral_id
 
+
+        assert (np.array(n_dims) == self.lower.shape and np.array(n_dims) == self.upper.shape), f"The dimensions\
+of upper and lower bounds do not coincide with the dimensionality of the problem. n_dims = {self.n_dims}\
+ vs lower bound = {self.lower.shape} and upper_bound = {self.upper.shape} "
     def quantum_individual_init(self):
         """Creates a Quantum individual of n_dims features. For each feature mu and sigma are created
          (normal distribution).
@@ -45,6 +51,7 @@ class QuantumEvAlgorithm:
     def quantum_sampling(self, Q, n_samples):
         """This method generates n_samples from Q (each sample feature is generated with its correspondent
         mu_i and sigma_i)"""
+
         samples = np.minimum(np.maximum(np.random.normal(Q[0, :], Q[1, :], size=(n_samples, self.n_dims)),self.lower),self.upper)
         
         # print(f'samples shape = {samples.shape}')
@@ -124,7 +131,7 @@ class QuantumEvAlgorithm:
         sys.stdout.flush()
 
     def training(self, N_iterations=100000, sample_size=5,
-                 save_results = False, filename = 'testing_evl.npz'):
+                 save = False, filename = 'testing_evl.npz'):
 
         assert(sample_size > self.elitist_level), "Sample size must be greater than elitist level, byF"
         j = 0
@@ -161,7 +168,7 @@ class QuantumEvAlgorithm:
 
             if np.mod(i, 50) == 0:
                 #print(f'Progress {100*i/N_iterations:.2f}%, Best cost = {output}')
-                self.progress(i,N_iterations,f'Best cost = {self.cost_function(best_performer)}, RMSE = {self.error(best_performer)}')
+                self.progress(i,N_iterations,f'Best cost = {self.cost_function(best_performer)}')
 
             if self.cost_function(best_performer) <= 0.0001 and False:
                 print(f'\n\n|| Min detected, value = {self.cost_function(best_performer)}||')
@@ -169,19 +176,26 @@ class QuantumEvAlgorithm:
 
         end = time.time()
 
+        results = {
+            "time": end - beginning,
+            "cost": self.cost_function(best_performer),
+            "min" : best_performer  
+        }
 
-
-        print(f' \n \n The algorithm took {end - beginning} seconds \n \n ')
+        print(f' \n \n Elapsed time = {end - beginning} seconds')
+                
         #print(f' min is  = {self.cost_function(best_performer)}')
 
-        print(f'The min is IN = {best_performer} \n \n ')
+        # print(f'The min is IN = {best_performer} \n \n ')
 
         results_path = 'Results'
-        if save_results:
-            print('Saving RESULTS')
+        if save:
+            print(' Saving results')
             np.savez(os.path.join(results_path, filename), best_performer_marker, Q_history, function_evaluations,
                     cost_h = best_performer_marker,
                     pos_history = Q_history, time=function_evaluations)
+        print(100*'-')
+        return results
 
      
 
