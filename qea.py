@@ -8,8 +8,8 @@ class QuantumEvAlgorithm:
     optimization algorithm. For a thorough description of the algorithm please visit:
     URL. FWG"""
 
-    def __init__(self, f, n_dims, upper_bound, lower_bound, sigma_scaler=1.00001, mu_scaler=100, elitist_level=2,error_ev = mse ,ros_flag = False, saving_interval = 10, 
-    integral_id = np.full(n_dims, False)):
+    def __init__(self, f, n_dims, upper_bound, lower_bound, integral_id, sigma_scaler=1.00001, mu_scaler=100, elitist_level=4,error_ev = mse ,ros_flag = False, saving_interval = 500, 
+    ):
         """The QuantumEvAlgorithm class admits a (scalar) function to be optimized. The function
         must be able to generate multiple outputs for multiple inputs of shape (n_samples,n_dimensions).
         The n_dims attribute is to be placed as an input of the class"""
@@ -24,8 +24,7 @@ class QuantumEvAlgorithm:
         self.upper = upper_bound
         self.lower = lower_bound
         self.integral_id = integral_id
-
-
+        
         assert (np.array(n_dims) == self.lower.shape and np.array(n_dims) == self.upper.shape), f"The dimensions\
 of upper and lower bounds do not coincide with the dimensionality of the problem. n_dims = {self.n_dims}\
  vs lower bound = {self.lower.shape} and upper_bound = {self.upper.shape} "
@@ -51,12 +50,15 @@ of upper and lower bounds do not coincide with the dimensionality of the problem
     def quantum_sampling(self, Q, n_samples):
         """This method generates n_samples from Q (each sample feature is generated with its correspondent
         mu_i and sigma_i)"""
+       
+        if self.integral_id.any() == True:   
+            normal_samples = np.random.normal(Q[0, :], Q[1, :], size=(n_samples, self.n_dims))
+            mask =  np.tile(self.integral_id, (n_samples,1))
+            samples = np.minimum(np.maximum(normal_samples,self.lower),self.upper)
+            np.place(samples, mask, np.round(samples[mask]))
+        else:
+            samples = np.minimum(np.maximum(np.random.normal(Q[0, :], Q[1, :], size=(n_samples, self.n_dims)),self.lower),self.upper)
 
-        samples = np.minimum(np.maximum(np.random.normal(Q[0, :], Q[1, :], size=(n_samples, self.n_dims)),self.lower),self.upper)
-        
-        # print(f'samples shape = {samples.shape}')
-        # print(f'mu shape {Q[0:1,:].shape}')
-        # print(f'append shape {np.append(samples,Q[0:1,:],axis=0).shape}')
         return samples
 
 
@@ -152,7 +154,9 @@ of upper and lower bounds do not coincide with the dimensionality of the problem
             # adapted_sample_size = int(sample_size * (1 + sample_increaser_factor * (i / N_iterations)))
 
             samples = self.quantum_sampling(Q, sample_size)
+            
             best_performer = self.elitist_sample_evaluation(samples)
+            
             if self.cost_function(best_performer) < self.cost_function(self.best_of_best):
                 self.best_of_best = best_performer
 
@@ -167,7 +171,7 @@ of upper and lower bounds do not coincide with the dimensionality of the problem
                 
 
             if np.mod(i, 50) == 0:
-                #print(f'Progress {100*i/N_iterations:.2f}%, Best cost = {output}')
+                # print(f'Progress {100*i/N_iterations:.2f}%, Best cost = {output}')
                 self.progress(i,N_iterations,f'Best cost = {self.cost_function(best_performer)}')
 
             if self.cost_function(best_performer) <= 0.0001 and False:
