@@ -1,18 +1,9 @@
-import sys
-import time
-#This test was succesfull
-def progress(count, total, status='Processing'):
-    bar_len = 50
-    filled_len = int(round(bar_len * count / float(total)))
+import numpy as np
+a = np.random.rand(3,3)
+ma = np.array([False,False,True])
+ma = np.tile(ma, (3,1))
+print(ma)
+np.place(a, ma,np.round(a[ma]))
 
-    percents = round(100.0 * count / float(total), 1)
-    bar = '|' * filled_len + '_' * (bar_len - filled_len)
 
-    sys.stdout.write('\r%s %s%s %s' % (bar, percents, '%', status))
-    sys.stdout.flush()
-
-for i in range(100):
-    progress(i,100)
-    time.sleep(0.2)
-
-#De cojones
+print(a)
