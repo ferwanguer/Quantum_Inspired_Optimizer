@@ -1,4 +1,4 @@
-from ttest_functions import f, g, rastrigin, rosenbrock, michael, schwefel, dropwave, schaffer_2, equation
+from cost_functions import f, g, rastrigin, rosenbrock, michael, schwefel, dropwave, schaffer_2, equation
 from pyswarms.single import GlobalBestPSO
 import numpy as np
 import time

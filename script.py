@@ -2,7 +2,7 @@ import numpy as np
 import pandas
 from qea import QuantumEvAlgorithm
 from restrictions import h, h_1
-from ttest_functions import f,g,rastrigin,rosenbrock, griewank, michael, schwefel, dropwave, schaffer_2, equation
+from cost_functions import f,g,rastrigin,rosenbrock, griewank, michael, schwefel, dropwave, schaffer_2, equation
 n_dims = 50
 up = 5*np.ones(n_dims)
 low = -5*np.ones(n_dims)

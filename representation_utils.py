@@ -15,43 +15,24 @@ from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 # import latex
 # DATA IMPORT FROM NPZ FILES
 results_path = 'Results'
-<<<<<<< HEAD
 # optimization_results = np.load(os.path.join(results_path,'qea_testing_sigma_0001.npz'))
 # Q_history = optimization_results['pos_history']
 # cost_history = optimization_results['cost_h']
 # history = optimization_results['time']
-=======
-optimization_results = np.load(os.path.join(results_path,'qea_testing_50.npz'))
-Q_history = optimization_results['pos_history']
-cost_history = optimization_results['cost_h']
-history = optimization_results['time']
->>>>>>> f0a81ab3022e0b37e25899b28e1b9eb6b7adef5f
 
 optimization_results_2 = np.load(os.path.join(results_path,'qea_testing_10000.npz'))
 cost_history_2 = optimization_results_2['cost_h']
 history_2 = optimization_results_2['time']
 
-<<<<<<< HEAD
 optimization_results_3 = np.load(os.path.join(results_path,'testing_genetic_500.npz'))
 # Q_history_3 = optimization_results_3['pos_history']
-=======
-optimization_results_3 = np.load(os.path.join(results_path,'qea_testing_5002.npz'))
-Q_history_3 = optimization_results_3['pos_history']
->>>>>>> f0a81ab3022e0b37e25899b28e1b9eb6b7adef5f
 cost_history_3 = optimization_results_3['cost_h']
 history_3 = optimization_results_3['eval']
 
-<<<<<<< HEAD
 # optimization_results_4 = np.load(os.path.join(results_path,'qea_testing0002.npz'))
 # Q_history_4 = optimization_results_4['pos_history']
 # cost_history_4 = optimization_results_4['cost_h']
 # history_4 = optimization_results_4['time']
-=======
-optimization_results_4 = np.load(os.path.join(results_path,'qea_testing3.npz'))
-Q_history_4 = optimization_results_4['pos_history']
-cost_history_4 = optimization_results_4['cost_h']
-history_4 = optimization_results_4['time']
->>>>>>> f0a81ab3022e0b37e25899b28e1b9eb6b7adef5f
 
 
 
@@ -191,7 +172,7 @@ j = 0
 #Explanation part to paint.
 
 #Step 1: Paint rastrigin function
-from ttest_functions import rastrigin
+from cost_functions import rastrigin
 #
 #
 # def objective(X, Y):

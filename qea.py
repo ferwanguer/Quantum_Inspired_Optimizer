@@ -2,7 +2,7 @@ import numpy as np
 import time
 import os
 import sys
-from ttest_functions import mse,f
+from cost_functions import mse,f
 class QuantumEvAlgorithm:
     """This object encapsules the necessary methods to make a Quantum-Inspired
     optimization algorithm. For a thorough description of the algorithm please visit:
