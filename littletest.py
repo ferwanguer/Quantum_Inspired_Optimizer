@@ -6,3 +6,6 @@ print(ma)
 np.place(a, ma,np.round(a[ma]))
 
 print(a)
+b = [3,7]
+if b:
+    print("F")

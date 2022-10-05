@@ -8,8 +8,8 @@ class QuantumEvAlgorithm:
     optimization algorithm. For a thorough description of the algorithm please visit:
     URL. FWG"""
 
-    def __init__(self, f, n_dims, upper_bound, lower_bound, integral_id, sigma_scaler=1.00001, mu_scaler=100, elitist_level=4,error_ev = mse ,ros_flag = False, saving_interval = 500, 
-    ):
+    def __init__(self, f, n_dims, upper_bound, lower_bound, integral_id, sigma_scaler=1.00001, mu_scaler=100, elitist_level=4,
+    error_ev = mse ,ros_flag = False, saving_interval = 500, restrictions = []):
         """The QuantumEvAlgorithm class admits a (scalar) function to be optimized. The function
         must be able to generate multiple outputs for multiple inputs of shape (n_samples,n_dimensions).
         The n_dims attribute is to be placed as an input of the class"""
@@ -24,6 +24,7 @@ class QuantumEvAlgorithm:
         self.upper = upper_bound
         self.lower = lower_bound
         self.integral_id = integral_id
+        self.restrictions = restrictions
         
         assert (np.array(n_dims) == self.lower.shape and np.array(n_dims) == self.upper.shape), f"The dimensions\
 of upper and lower bounds do not coincide with the dimensionality of the problem. n_dims = {self.n_dims}\
@@ -58,8 +59,35 @@ of upper and lower bounds do not coincide with the dimensionality of the problem
             np.place(samples, mask, np.round(samples[mask]))
         else:
             samples = np.minimum(np.maximum(np.random.normal(Q[0, :], Q[1, :], size=(n_samples, self.n_dims)),self.lower),self.upper)
-
+        
         return samples
+
+    def restricted_quantum_sampling(self, Q, n_samples):
+        """This method generates n_samples from Q (each sample feature is generated with its correspondent
+        mu_i and sigma_i)"""
+        samples = self.quantum_sampling(Q, n_samples)
+
+        valid = np.full(n_samples,True)
+
+        for h in self.restrictions:
+            valid = valid * h(samples)>0
+        samples = samples[valid,:]
+        
+        
+        while (n_samples-samples.shape[0] > 0):
+            new_samples = self.quantum_sampling(Q, n_samples - samples.shape[0])
+            
+            valid_s = np.full(n_samples - samples.shape[0],True)
+            for h in self.restrictions:
+                valid_s = valid_s * h(new_samples)>0
+            samples = np.vstack((samples,new_samples[valid_s,:]))    
+
+
+
+       
+            
+        return samples
+
 
 
     def elitist_sample_evaluation(self, samples):
@@ -72,21 +100,7 @@ of upper and lower bounds do not coincide with the dimensionality of the problem
 
         return best_performing_sample
 
-    def pondered_elitist_sample_evaluation(self, samples):
-        """This function is analog to the previous one. Instead of choosing the best, it computes the mean of the
-        0 best samples. It may be pending to orient it as a maximization problem. Still yet to decide"""
-        cost = self.cost_function(samples)
-        sort_order = np.argsort(cost, axis=0)
-        elitist_level = self.elitist_level
-        elitist_costs = cost[sort_order[0:elitist_level]]
-        # print(f'elitist costs = {elitist_costs}')
-        total_cost = np.sum(elitist_costs)
-        # print(f'totalcost = {total_cost}')
-        weights = 1 - elitist_costs / total_cost
-        # print(f'weights = {weights}')
-        best_performing_sample = np.average(samples[sort_order[0:elitist_level]], axis=0, weights = weights)[None]
 
-        return best_performing_sample
 
 
     def quantum_update(self, Q, best_performing_sample):
@@ -152,8 +166,10 @@ of upper and lower bounds do not coincide with the dimensionality of the problem
         for i in range(N_iterations+1):
 
             # adapted_sample_size = int(sample_size * (1 + sample_increaser_factor * (i / N_iterations)))
-
-            samples = self.quantum_sampling(Q, sample_size)
+            if self.restrictions:
+                samples = self.restricted_quantum_sampling(Q, sample_size)
+            else:
+                samples = self.quantum_sampling(Q, sample_size)
             
             best_performer = self.elitist_sample_evaluation(samples)
             
